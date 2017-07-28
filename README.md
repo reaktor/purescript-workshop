@@ -7,7 +7,7 @@ No prior PureScript knowledge is required. Some familiarity with JavaScript (or 
 
 ## Initial setup
 
-[See the README for Exercise 1 for the initial setup.](exercise1/README.md)
+[See the README for Exercise 1 for the initial setup.](exercise1)
 
 ## Helpful Resources
 
