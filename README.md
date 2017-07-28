@@ -1,13 +1,13 @@
 # PureScript Workshop
 
-The goal of this workshop is to get attendees started with practical web application development using PureScript. The focus is on practical application of PureScript over theoretical understanding.
+The goal of this workshop is to get attendees started with practical web app development using PureScript. The focus is on application of PureScript concepts over theoretical understanding.
 
 ## Pre-requisites
-No prior PureScript knowledge is required. Some familiarity with JavaScript is assumed.
+No prior PureScript knowledge is required. Some familiarity with JavaScript (or at least JavaScript tooling) is helpful.
 
 ## Initial setup
 
-[See the README for Exercise 1 for the initial setup.](exercise/README.md)
+[See the README for Exercise 1 for the initial setup.](exercise1/README.md)
 
 ## Helpful Resources
 
