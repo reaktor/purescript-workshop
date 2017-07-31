@@ -1,0 +1,70 @@
+@font-face {
+    font-family: 'jungkabold';
+    src: url('fonts/jungka-bold-webfont.woff2') format('woff2'),
+         url('fonts/jungka-bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'jungkalight';
+    src: url('fonts/jungka-light-webfont.woff2') format('woff2'),
+         url('fonts/jungka-light-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'jungkamedium';
+    src: url('fonts/jungka-medium-webfont.woff2') format('woff2'),
+         url('fonts/jungka-medium-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    font-family: 'jungkaregular';
+    src: url('fonts/jungka-regular-webfont.woff2') format('woff2'),
+         url('fonts/jungka-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+  background-color: rgb(0, 43, 54);
+}
+
+.reveal {
+  font-size: 32px;
+}
+
+body, .reveal, .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 {
+  font-family: 'jungkaregular';
+}
+
+.reveal .task-title {
+  text-align: left;
+  font-weight: bold;
+  font-size: 28px;
+  line-height: 42px;
+}
+
+.reveal pre {
+  box-shadow: none;
+}
+
+.reveal code {
+  padding: 0;
+}
+
+.reveal .b { font-weight: bold; }
+.reveal .red { color: #E6567A; }
+.reveal .blue, .reveal .pscolor { color: #00C0E4; }
+.reveal .green { color: #c5e86c; }
+.reveal .yellow, .reveal .jscolor { color: #ffcd00; }
+.reveal .pink { color: #ffa38b; }
+.reveal .turquoise { color: #2dccd3; }
+.reveal .purple { color: #7658F8; }
