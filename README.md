@@ -1,4 +1,6 @@
-# PureScript Workshop
+# PureScript for Working Stiffs
+
+This is a workshop introduction to the PureScript language.
 
 The goal of this workshop is to get attendees started with practical web app development using PureScript. The focus is on application of PureScript concepts over theoretical understanding.
 
