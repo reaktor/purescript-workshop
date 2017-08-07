@@ -45,16 +45,16 @@ initialState =
   , stories: [] }
 
 foldp :: forall eff. Event -> State -> EffModel State Event (console :: CONSOLE | eff)
-foldp event@(LoadFrontPage) state = 
+foldp LoadFrontPage state = 
   { state
   , effects: [loadHackerNewsStories] }
-foldp event@(SetStories stories) state =
+foldp (SetStories stories) state =
   { state: state { stories = stories }
   , effects: [] }
-foldp event@(SetSortBy newSort) state =
+foldp (SetSortBy newSort) state =
   { state: state { selectedSort = newSort }
   , effects: [] }
-foldp event@(SetFilter filterText) state =
+foldp (SetFilter filterText) state =
   { state: state { filterText = filterText }
   , effects: [] }
 
