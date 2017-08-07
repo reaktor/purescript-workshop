@@ -26,6 +26,12 @@ There are a number of exercises to complete, in sequence, to build up a Hacker n
     1. [Exercise #7](./exercise7): Time and the Foreign Function Interface (FFI)
 1. Conclusion & discussion
 
+The presentation slides are [in the slides directory](./slides).
+
+## How long does this take?
+
+In one three-hour session about half of the material was covered, so it might take 6 hours or so to cover the whole set.
+
 ## Helpful Resources
 
 * [The PureScript Book](https://leanpub.com/purescript/read)
