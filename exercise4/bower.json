@@ -6,6 +6,7 @@
     "purescript-css": "^3.0.0",
     "purescript-aff": "^3.0.0",
     "purescript-debug": "^3.0.0",
-    "purescript-console": "^3.0.0"
+    "purescript-console": "^3.0.0",
+    "purescript-psci-support": "^3.0.0"
   }
 }

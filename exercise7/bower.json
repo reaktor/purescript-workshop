@@ -9,6 +9,7 @@
     "purescript-debug": "^3.0.0",
     "purescript-generics-rep": "^5.1.0",
     "purescript-foreign-generic": "^4.2.0",
-    "purescript-console": "^3.0.0"
+    "purescript-console": "^3.0.0",
+    "purescript-psci-support": "^3.0.0"
   }
 }
