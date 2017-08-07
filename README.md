@@ -30,7 +30,7 @@ The presentation slides can be viewed [here](https://reaktor.github.io/purescrip
 
 ## How long does this take?
 
-In one three-hour session about half of the material was covered, so it might take 6 hours or so to cover the whole set.
+In one three-hour session for experienced developers new to PureScript about half of the material was covered, so it might take 6 hours or so for a guided presentation of the whole set for a similar group.
 
 ## Helpful Resources
 
