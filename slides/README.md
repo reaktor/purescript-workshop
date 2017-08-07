@@ -2,7 +2,9 @@
 
 This is a presentation of PureScript basics, meant to be used as introductory material for each of the workshop exercises.
 
-## Viewing the slides
+[View the slides here.](https://reaktor.github.io/purescript-workshop)
+
+## Viewing the slides locally
 
 ```
 npm install
