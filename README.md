@@ -26,7 +26,7 @@ There are a number of exercises to complete, in sequence, to build up a Hacker n
     1. [Exercise #7](./exercise7): Time and the Foreign Function Interface (FFI)
 1. Conclusion & discussion
 
-The presentation slides are [in the slides directory](./slides).
+The presentation slides can be viewed [here](https://reaktor.github.io/purescript-workshop). The source code for the slides is [in the slides directory](./slides).
 
 ## How long does this take?
 
