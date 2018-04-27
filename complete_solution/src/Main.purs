@@ -63,7 +63,7 @@ initialState = State
   , selectedSort: ByScore
   , stories: [] }
 
-foldp :: forall eff. Event -> State -> EffModel State Event (ajax :: AJAX, console :: CONSOLE | eff)
+foldp :: Event -> State -> EffModel State Event _
 foldp event@(LoadFrontPage) state = 
   { state
   , effects: [
@@ -80,7 +80,7 @@ foldp event@(SetFilter filterText) (State state) =
   { state: State $ state { filterText = filterText }
   , effects: [logEvent event (State state)] }
 
-loadHackerNewsStories :: forall e. Aff (ajax :: AJAX, console :: CONSOLE | e) (Maybe Event)
+loadHackerNewsStories :: Aff _ (Maybe Event)
 loadHackerNewsStories = do
   storiesResult <- fetchHackerNewsStories
   case storiesResult of
@@ -89,7 +89,7 @@ loadHackerNewsStories = do
       pure Nothing
     Right stories -> pure $ Just (SetStories stories)
 
-logEvent :: forall e. Event -> State -> Aff (console :: CONSOLE | e) (Maybe Event)
+logEvent :: Event -> State -> Aff _ (Maybe Event)
 logEvent event state = do
   liftEff $ log (show event)
   liftEff $ log (show state)
@@ -223,7 +223,7 @@ numCommentsStyle = do
   paddingTop (px 2.0)
   display inline
   
-main :: forall eff. Eff (ajax :: AJAX, channel :: CHANNEL, console :: CONSOLE, exception :: EXCEPTION | eff) Unit
+main :: Eff _ Unit
 main = do
   app <- start
     { initialState
