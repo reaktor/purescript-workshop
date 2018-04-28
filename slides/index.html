@@ -35,38 +35,30 @@
         </section>
         <section data-markdown>
 	<textarea data-template>
-		### Where to go for help
+		### Halp! How do I...?
 
   [PureScript by Example (book)](https://leanpub.com/purescript/read)
 
-  [Language Reference](https://github.com/purescript/documentation/blob/master/language/README.md)
+  [PureScript Language Reference](https://github.com/purescript/documentation/blob/master/language/README.md)
 
   [Pursuit (language/library docs)](https://pursuit.purescript.org/)
+
+  [Pux docs (UI library)](http://purescript-pux.org/docs/architecture/)
 	</textarea>
         </section>
 				<section>
           <h3>PureScript</h3>
-          <h4>strongly-typed and functional (a la Haskell)</h4>
+          <h4>strongly-typed and purely functional (a la Haskell)</h4>
           <h4>strict (unlike Haskell)</h4>
           <h4>compiles to "readable" JavaScript</h4>
-          <h4>no runtime (unlike Elm, ClojureScript)</h4>
-        </section>
-        <section>
-        <h3>Hello World</h3>
-<pre><code class="hljs" data-trim>
-module Main where
-
-import Control.Monad.Eff.Console (log)
-
-main = log "Hello, World!"
-</code></pre>
+          <h4>no runtime (unlike GHCJS, Elm, ClojureScript)</h4>
         </section>
 				<section>
           <section>
-            <h3>Basic types and functions</h3>
+            <h3>Basic types</h3>
           </section>
           <section>
-            <h3>REPL</h3>
+            <h3>(but first open the REPL)</h3>
 				<pre><code class="hljs" data-trim>
 $ npm run repl
 > import Prelude
@@ -112,6 +104,8 @@ myList = [1, 2, 3, 4]
 colors :: Array String
 colors = ["red", "orange", "yellow", "green"]
 				</code></pre>
+        <p>Arrays always contain only a single type</p>
+        <p>(they're homogenous)</p>
           </section>
           <section>
             <h3>Basic types: Records</h3>
@@ -119,20 +113,98 @@ colors = ["red", "orange", "yellow", "green"]
 user :: { name :: String, id :: Int }
 user = {name: "Joe", id: 1}
 				</code></pre>
-        <p>Records correspond to JavaScript objects</p>
+        <p>Records basically correspond to JavaScript objects</p>
           </section>
           <section>
-            <h3>Functions are curried</h3>
+            <h3>Type synonyms</h3>
+				<pre><code class="hljs" data-trim>
+type User = { name :: String, id :: Int }
+
+type Address =
+  { street :: String
+  , city   :: String
+  , state  :: String
+  }
+
+type AddressBook = Array Address
+
+type UserId = String
+
+type Log = Array String
+				</code></pre>
+          </section>
+          <section>
+            <h3>Type constructors</h3>
+				<pre><code class="hljs" data-trim>
+nums :: Array Int
+nums = [4, 3, 22, 1, 7]
+
+> :kind Array
+Type -> Type
+
+> :kind Array Int
+Type
+				</code></pre>
+            <p>Array is a <i>type constructor</i>, not a type</p>
+            <p>Array Int is a type</p>
+          </section>
+        </section>
+
+
+        <section>
+          <section>
+            <h3>Functions</h3>
+          </section>
+          <section>
+            <h3>Some functions</h3>
 				<pre><code class="hljs" data-trim>
 add :: Int -> Int -> Int
 add x y = x + y
 
-add2 :: Int -> Int
-add2 = add 2
+noEnergy :: Creep -> Boolean
+noEnergy creep = C.amtCarrying creep resource_energy == 0
+
+findProduct :: ProductId -> ProductDirectory -> Maybe Product
+findProduct id directory = -- body omitted
+
+loadConfig :: FilePath -> Aff _ (Either (NonEmptyList Error) Config)
+loadConfig cfgFile = do
+  -- body omitted
+
+-- Calling functions:
+add 1 2
+noEnergy creep
+findProduct id dir
+loadConfig path
 				</code></pre>
           </section>
           <section>
-            <h3>Everything is a pure function call</h3>
+            <h3>Functions are curried</h3>
+				<pre><code class="hljs" data-trim>
+sum :: Int -> Int -> Int
+sum x y = x + y
+
+-- Equivalent:
+sum 1 3
+(sum 1) 3
+
+addTwo :: Int -> Int
+addTwo = sum 2
+
+-- addTwo 6
+-- 8
+
+-- Common pattern: dropping the last parameters
+expiredSessions :: Array Session -> Array Session
+expiredSessions arr = filter isExpired arr
+-- can be shortened to
+expiredSessions :: Array Session -> Array Session
+expiredSessions = filter isExpired
+
+				</code></pre>
+          </section>
+          <section>
+            <h3>Operators are also functions</h3>
 				<pre><code class="hljs" data-trim>
 -- These are all equivalent:
 sum :: Int -> Int -> Int
@@ -146,9 +218,23 @@ sum x y = add x y
 
 sum :: Int -> Int -> Int
 sum x y = x `add` y
+
+sum :: Int -> Int -> Int
+sum = add
 				</code></pre>
-            <p>Operators are infix function calls</p>
             <p>They all have a plain text alias e.g. + and add</p>
+          </section>
+          <section>
+            <h3>Functions can take generic parameters</h3>
+				<pre><code class="hljs" data-trim>
+-- Works for any type of values in the array
+length :: forall a. Array a -> Int
+
+-- Works for many types of containers, 
+length :: forall a b f. Foldable f => Semiring b => f a -> b
+
+map :: forall a b f. Functor f => (a -> b) -> f a -> f b
+				</code></pre>
           </section>
           <section>
             <h3>The Dollar Sign: $</h3>
@@ -164,45 +250,21 @@ main = log ("User: " <> show (1 + 5))
 				</code></pre>
           <p>(<> is for appending)</p>
           </section>
-          <section>
-            <h3>Type synonyms</h3>
-				<pre><code class="hljs" data-trim>
-type Address =
-  { street :: String
-  , city   :: String
-  , state  :: String
-  }
+       </section>
 
-type AddressBook = Array Address
-				</code></pre>
-          </section>
-          <section>
-            <h3>Type constructors</h3>
-				<pre><code class="hljs" data-trim>
-nums :: Array Int
-nums = [4, 3, 22, 1, 7]
 
-> :kind Array
-Type -> Type
-
-> :kind Array Int
-Type
-				</code></pre>
-            <p>Array is a <i>type constructor</i></p>
-          </section>
-        </section>
         <section>
           <section>
             <h3>Libraries and the Prelude</h3>
             <ul>
               <li>Everything is in small libraries</li>
               <ul>
-                <li>The standard library: Prelude</li>
+                <li>Basic functions and types: Prelude</li>
                 <li>Array functions: Data.Array</li>
                 <li>List functions: Data.List</li>
                 <li>Tuple functions: Data.Tuple</li>
               </ul>
-              <li>Libraries are in Bower</li>
+              <li>Libraries are in Bower and/or psc-package</li>
               <li>Library documentation is on <span class="yellow">Pursuit</span></li>
             </ul>
           </section>
@@ -212,6 +274,10 @@ Type
               <li>One-stop shop for library documentation</li>
               <li>Also links to source code</li>
               <li>Bind it to a keyword search e.g. `pu`</li>
+              <small><ul>
+              <li>Firefox: right-click on search box -> "Add a Keyword for this Search"</li>
+              <li>Chrome: search on Pursuit, then try enter 'pursuit[TAB]' in omnibar</li>
+              </ul></small>
               <li>The answer to everything is "Search Pursuit"</li>
               <small><ul>
               <li>What's in the "purescript-arrays" package? -> "pu arrays"</li>
@@ -225,25 +291,27 @@ Type
             <h3>Prelude module</h3>
             <p>Bower package: purescript-prelude</p>
 				<pre><code class="hljs" data-trim>
--- Most source files start like this:
+-- Most PS code starts by importing the Prelude:
 module Foo where
 
 import Prelude
+
+-- ... module code
 				</code></pre>
 				<pre><code class="hljs" data-trim>
--- Useful things like:
-map :: forall a b. (a -> b) -> f a -> f b     -- aka <$>
+-- Prelude has useful things like:
 add :: forall a. Semiring a => a -> a -> a    -- aka +
 mul :: forall a. Semiring a => a -> a -> a    -- aka *
 eq :: forall a. Eq a => a -> a -> Boolean     -- aka ==
 notEq :: forall a. Eq a => a -> a -> Boolean  -- aka /=
+map :: forall a b. (a -> b) -> f a -> f b     -- aka <$>
 				</code></pre>
-              <p>Prelude is your "standard library"</p>
           </section>
           <section>
-            <h3>Data.Array module</h3>
+            <h3>Example: Data.Array module</h3>
         <p>Bower package: purescript-arrays</p>
 				<pre><code class="hljs" data-trim>
+-- in module Data.Array:
 insert :: forall a. Ord a => a -> Array a -> Array a
 length :: forall a. Array a -> Int
 filter :: forall a. (a -> Boolean) -> Array a -> Array a
