@@ -4,6 +4,7 @@
   "description": "",
   "main": "support/index.js",
   "scripts": {
+    "bower": "bower",
     "postinstall": "bower cache clean && bower install",
     "clean": "rimraf static/dist",
     "build": "npm run clean && webpack --config ./webpack.config.js --progress --profile --colors",
