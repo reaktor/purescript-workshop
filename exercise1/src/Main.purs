@@ -5,8 +5,6 @@ import Prelude hiding (div)
 import CSS (CSS, backgroundColor, margin, marginBottom, padding, px, rgb)
 import Control.Monad.Aff (Aff)
 import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Console (CONSOLE)
-import Control.Monad.Eff.Exception (EXCEPTION)
 import Data.Array (length, zip, (..))
 import Data.Foldable (for_)
 import Data.Maybe (Maybe(Just, Nothing))
@@ -30,7 +28,7 @@ type State = { stories :: Array Story }
 initialState :: State
 initialState = { stories: [] }
 
-foldp :: forall eff. Event -> State -> EffModel State Event (console :: CONSOLE | eff)
+foldp :: Event -> State -> EffModel State Event _
 foldp LoadFrontPage state = 
   { state
   , effects: [loadHackerNewsStories] }
@@ -38,7 +36,7 @@ foldp (SetStories stories) state =
   { state: state { stories = stories }
   , effects: [] }
 
-loadHackerNewsStories :: forall e. Aff (console :: CONSOLE | e) (Maybe Event)
+loadHackerNewsStories :: forall e. Aff _ (Maybe Event)
 loadHackerNewsStories = do
   pure $ Just (SetStories hackerNewsStories)
 
@@ -67,7 +65,7 @@ storyItem story =
   div ! style (marginBottom (px 5.0)) $ do
     div $ text story.objectID
   
-main :: forall eff. Eff (channel :: CHANNEL, console :: CONSOLE, exception :: EXCEPTION | eff) Unit
+main :: Eff _ Unit
 main = do
   app <- start
     { initialState
