@@ -237,6 +237,12 @@ map :: forall a b f. Functor f => (a -> b) -> f a -> f b
 				</code></pre>
           </section>
           <section>
+            <h3>Anonymous functions</h3>
+				<pre><code class="hljs" data-trim>
+val = Array.filter (\id -> id == "teh_id") ["an_id", "teh_id", "other_id"]
+				</code></pre>
+          </section>
+          <section>
             <h3>The Dollar Sign: $</h3>
             <p>"everything after goes in parentheses"</p>
 				<pre><code class="hljs" data-trim>
@@ -256,21 +262,28 @@ main = log ("User: " <> show (1 + 5))
         <section>
           <section>
             <h3>Libraries and the Prelude</h3>
-            <ul>
-              <li>Everything is in small libraries</li>
-              <ul>
-                <li>Basic functions and types: Prelude</li>
-                <li>Array functions: Data.Array</li>
-                <li>List functions: Data.List</li>
-                <li>Tuple functions: Data.Tuple</li>
-              </ul>
-              <li>Libraries are in Bower and/or psc-package</li>
-              <li>Library documentation is on <span class="yellow">Pursuit</span></li>
-            </ul>
+            <p>Everything is in small libraries</p>
+            <table>
+              <thead>
+                <tr><th>What</th><th>Module</th><th>Package</th>
+              </thead>
+              <tbody>
+              <tr><td>Basic functions and types</td><td>Prelude</td><td>purescript-prelude</td></tr>
+              <tr><td>Array functions</td><td>Data.Array</td><td>purescript-arrays</td></tr>
+              <tr><td>List functions</td><td>Data.List</td><td>purescript-lists</td></tr>
+              <tr><td>Record functions</td><td>Data.Record</td><td>purescript-record</td></tr>
+              <tr><td>Tuples</td><td>Data.Tuple</td><td>purescript-tuples</td></tr>
+              <tr><td>Maybe ("option type")</td><td>Data.Maybe</td><td>purescript-maybe</td></tr>
+              <tr><td>Either ("result type")</td><td>Data.Either</td><td>purescript-either</td></tr>
+              </tbody>
+            </table>
+            <p>Libraries are in psc-package and/or Bower</p>
+            <p>Library documentation is on <span class="yellow">Pursuit</span></p>
           </section>
           <section>
             <h3>Pursuit</h3>
             <ul>
+              <li>Your most important friend</li>
               <li>One-stop shop for library documentation</li>
               <li>Also links to source code</li>
               <li>Bind it to a keyword search e.g. `pu`</li>
@@ -278,7 +291,7 @@ main = log ("User: " <> show (1 + 5))
               <li>Firefox: right-click on search box -> "Add a Keyword for this Search"</li>
               <li>Chrome: search on Pursuit, then try enter 'pursuit[TAB]' in omnibar</li>
               </ul></small>
-              <li>The answer to everything is "Search Pursuit"</li>
+              <li><span class="yellow">The answer to everything is "Search Pursuit"</span></li>
               <small><ul>
               <li>What's in the "purescript-arrays" package? -> "pu arrays"</li>
               <li>What's in the "Data.Array" module? -> "pu Data.Array"</li>
