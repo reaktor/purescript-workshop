@@ -8,6 +8,7 @@
     "compile:watch": "pulp --psc-package --watch browserify --to public/client.js",
     "psc": "psc-package",
     "pulp": "pulp --psc-package",
+    "repl": "pulp --psc-package repl",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
