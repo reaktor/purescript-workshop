@@ -1,5 +1,10 @@
 # Exercise #2: ADTs, sorting and filtering
 
+## Warm-up: ADTs and newtypes
+
+Run `npm run test:watch` to kick off test running. Make the test pass. Uncomment the next one, and make that pass, and so forth.
+
+
 ## Task
 
 Update the Hacker Reader app to allow:
