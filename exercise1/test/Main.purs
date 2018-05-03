@@ -7,7 +7,7 @@ import Data.Array as Array
 import Data.Foldable (all)
 import Data.Record (class EqualFields)
 import Data.Record as Record
-import Data.Tuple (Tuple(..))
+import Data.Tuple (Tuple(Tuple))
 import HackerNewsApi (Story, hackerNewsStories)
 import Test.Unit (TestSuite, suite, test)
 import Test.Unit.Assert as Assert
@@ -16,11 +16,39 @@ import Type.Row (class RowToList)
 
 main :: forall e. Eff _ Unit
 main = runTest $ do
-  suite "Basic functional transformations" do
-    test "list the authors of the sample Hacker News stories" do
+  suite "Basic types: records" do
+    test "get a field from a record" do
       Assert.equal
-        ["bpierre", "pka", "sharkdp", "paf31", "dstronczak", "purescript"]
-        (listAuthors hackerNewsStories)
+        "123 Barry St"
+        (getAddress { street: "123 Barry St", city: "P-town" })
+        
+    -- test "update a field in a record" do
+    --   Assert.assert
+    --     "nope"
+    --     (Record.equal
+    --      { street: "127 Barry St", city: "P-town" }
+    --      (updateStreet "127 Barry St" { street: "123 Barry St", city: "P-town" }))
+      
+    -- test "print an address" do
+    --   Assert.equal
+    --     "123 Barry St, P-town"
+    --     (showAddress { street: "123 Barry St", city: "P-town" })
+    
+  -- suite "Basic functional transformations" do
+  --   test "find the largest number" do
+  --     Assert.equal
+  --       176
+  --       (largestNumber [3, 7, 5, 176, 12])
+        
+    -- test "sum a list of numbers" do
+    --   Assert.equal
+    --     12
+    --     (sumNumbers [3, 7, 5, 12, 176])
+        
+    -- test "list the authors of the sample Hacker News stories" do
+    --   Assert.equal
+    --     ["bpierre", "pka", "sharkdp", "paf31", "dstronczak", "purescript"]
+    --     (listAuthors hackerNewsStories)
     
     -- test "list the IDs of stories with more than 100 points" do
     --   Assert.equal
@@ -39,6 +67,23 @@ main = runTest $ do
     --         num_comments: 17,
     --         objectID: "6651572"}]
     --       (philStories hackerNewsStories))
+      
+type Address = { street :: String, city :: String }
+
+getAddress :: Address -> String
+getAddress address = ""
+
+updateStreet :: String -> Address -> Address
+updateStreet newStr address = address
+
+showAddress :: Address -> String
+showAddress address = ""
+
+largestNumber :: Array Int -> Int
+largestNumber nums = 0
+
+sumNumbers :: Array Int -> Int
+sumNumbers nums = 0
 
 listAuthors :: Array Story -> Array String
 listAuthors stories = []
