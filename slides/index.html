@@ -322,7 +322,7 @@ zip :: forall a b. Array a -> Array b -> Array (Tuple a b)
         </section>
 				<section>
           <section>
-            <h3>Exercise #1: Types and Functions</h3>
+            <h3>Exercise #1: Types, Functions, and Hacker News</h3>
           </section>
         </section>
 				<section>
@@ -453,6 +453,11 @@ data UserId = UserId Int
 				<section>
           <section>
             <h3>Exercise #2: Pattern matching and ADTs</h3>
+          </section>
+        </section>
+				<section>
+          <section>
+            <h3>Exercise #3: Time and the Foreign Function Interface</h3>
           </section>
         </section>
 				<section>
@@ -627,83 +632,7 @@ class Decode a where
         </section>
 				<section>
           <section>
-            <h3>Exercise #3: Type classes</h3>
-          </section>
-        </section>
-				<section>
-          <section>
-            <h3>Generic Deriving</h3>
-          </section>
-          <section>
-            <h3>Generic Deriving</h3>
-<pre><code class="hljs" data-trim>
-import Data.Generic.Rep as G
-import Data.Generic.Rep.Eq as GEq
-import Data.Generic.Rep.Ord as GOrd
-import Data.Generic.Rep.Show as GShow
-
-data Foo = A | B | C | D
-
-derive instance genericFoo :: G.Generic Foo _
-
-instance eqFoo :: Eq Foo where
-  eq x y = GEq.genericEq x y
-
-instance ordFoo :: Ord Foo where
-  compare x y = GOrd.genericCompare x y
-
-instance showFoo :: Show Foo where
-show x = GShow.genericShow x
-</code></pre>
-            <p>You don't always have to write type class instances by hand</p>
-          </section>
-          <section>
-            <h3>How do I write a type class instance for a record type?</h3>
-            <p>Wrap it in newtype, then write the instance for the newtype</p>
-<pre><code class="hljs" data-trim>
-import Data.Generic.Rep as G
-import Data.Generic.Rep.Eq as GEq
-import Data.Generic.Rep.Ord as GOrd
-import Data.Generic.Rep.Show as GShow
-
--- type FooRecord = { a :: String, b :: String }
--- ->
-newtype FooRecord = FooRecord { a :: String, b :: String }
-
-derive instance genericFooRecord :: G.Generic FooRecord _
-
-instance eqFooRecord :: Eq FooRecord where
-  eq x y = GEq.genericEq x y
-
-instance ordFooRecord :: Ord FooRecord where
-  compare x y = GOrd.genericCompare x y
-
-instance showFooRecord :: Show FooRecord where
-show x = GShow.genericShow x
-</code></pre>
-          </section>
-        </section>
-				<section>
-          <section>
-            <h3>Exercise #4: Generic Deriving</h3>
-          </section>
-        </section>
-				<section>
-          <section>
-            <h3>Exercise #5: Decoding JSON</h3>
-          </section>
-        </section>
-				<section>
-          <section>
-            <h3>Exercise #6: Aff monad</h3>
-          </section>
-        </section>
-				<section>
-          <h3>Foreign Function Interface</h3>
-        </section>
-				<section>
-          <section>
-            <h3>Exercise #7: Foreign Function Interface</h3>
+            <h3>Exercise #4: The Network is calling for monads</h3>
           </section>
         </section>
 			</div>
