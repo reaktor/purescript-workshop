@@ -9,7 +9,8 @@
     "psc": "psc-package",
     "pulp": "pulp --psc-package",
     "repl": "pulp --psc-package repl",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "pulp --psc-package test",
+    "test:watch": "pulp --psc-package --watch test"
   },
   "dependencies": {
     "moment": "2.22.1",

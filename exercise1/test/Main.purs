@@ -14,7 +14,7 @@ import Test.Unit.Assert as Assert
 import Test.Unit.Main (runTest)
 import Type.Row (class RowToList)
 
-main :: forall e. Eff _ Unit
+main :: Eff _ Unit
 main = runTest $ do
   suite "Basic types: records" do
     test "get a field from a record" do
