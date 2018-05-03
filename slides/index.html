@@ -265,16 +265,17 @@ main = log ("User: " <> show (1 + 5))
             <p>Everything is in small libraries</p>
             <table>
               <thead>
-                <tr><th>What</th><th>Module</th><th>Package</th>
+                <tr><th>What</th><th>Package</th>
               </thead>
               <tbody>
-              <tr><td>Basic functions and types</td><td>Prelude</td><td>purescript-prelude</td></tr>
-              <tr><td>Array functions</td><td>Data.Array</td><td>purescript-arrays</td></tr>
-              <tr><td>List functions</td><td>Data.List</td><td>purescript-lists</td></tr>
-              <tr><td>Record functions</td><td>Data.Record</td><td>purescript-record</td></tr>
-              <tr><td>Tuples</td><td>Data.Tuple</td><td>purescript-tuples</td></tr>
-              <tr><td>Maybe ("option type")</td><td>Data.Maybe</td><td>purescript-maybe</td></tr>
-              <tr><td>Either ("result type")</td><td>Data.Either</td><td>purescript-either</td></tr>
+              <tr><td>Basic functions and types</td><td>purescript-prelude</td></tr>
+              <tr><td>Array functions</td><td>purescript-arrays</td></tr>
+              <tr><td>List functions</td><td>purescript-lists</td></tr>
+              <tr><td>Record functions</td><td>purescript-record</td></tr>
+              <tr><td>Tuples</td><td>purescript-tuples</td></tr>
+              <tr><td>The stuff you thought would be in one of ^</td><td>purescript-foldable-traversable</td></tr>
+              <tr><td>Maybe ("option type")</td><td>purescript-maybe</td></tr>
+              <tr><td>Either ("result type")</td><td>purescript-either</td></tr>
               </tbody>
             </table>
             <p>Libraries are in psc-package and/or Bower</p>
@@ -331,6 +332,24 @@ filter :: forall a. (a -> Boolean) -> Array a -> Array a
 union :: forall a. Eq a => Array a -> Array a -> Array a
 zip :: forall a b. Array a -> Array b -> Array (Tuple a b)
 				</code></pre>
+          </section>
+        </section>
+        <section>
+          <section>
+            <h3>Cheating with types</h3>
+            <ul>
+              <li>Type holes or how to make the compiler do your work</li>
+              <li>Typed search or how to make Pursuit do your work</li>
+            </ul>
+          </section>
+        </section>
+				<section>
+          <section>
+            <h3>Exercise #1 Warm-up: Types, Functions, and Hacker News</h3>
+          </section>
+        </section>
+          <section>
+            <h3>How Halogen works</h3>
           </section>
         </section>
 				<section>
