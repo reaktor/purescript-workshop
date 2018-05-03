@@ -4,6 +4,7 @@
   "source": "https://github.com/purescript/package-sets.git",
   "depends": [
     "psci-support",
+    "test-unit",
     "simple-json",
     "either",
     "aff",
