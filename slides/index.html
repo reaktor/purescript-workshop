@@ -43,7 +43,7 @@
 
   [Pursuit (language/library docs)](https://pursuit.purescript.org/)
 
-  [Pux docs (UI library)](http://purescript-pux.org/docs/architecture/)
+  [Halogen docs (UI library)](https://github.com/slamdata/purescript-halogen)
 	</textarea>
         </section>
 				<section>
@@ -263,6 +263,7 @@ main = log ("User: " <> show (1 + 5))
           <section>
             <h3>Libraries and the Prelude</h3>
             <p>Everything is in small libraries</p>
+            <small>
             <table>
               <thead>
                 <tr><th>What</th><th>Package</th>
@@ -278,6 +279,7 @@ main = log ("User: " <> show (1 + 5))
               <tr><td>Either ("result type")</td><td>purescript-either</td></tr>
               </tbody>
             </table>
+            </small>
             <p>Libraries are in psc-package and/or Bower</p>
             <p>Library documentation is on <span class="yellow">Pursuit</span></p>
           </section>
@@ -338,9 +340,9 @@ zip :: forall a b. Array a -> Array b -> Array (Tuple a b)
           <section>
             <h3>How to cheat with types</h3>
             <ul>
-              <li>Type holes or how to make the compiler do your work</li>
-              <li>Typed search or how to make Pursuit do your work</li>
-              <li>Being lazy and leaving off types or how to get PS to tell you</li>
+              <li><span class="blue">Type holes</span> or how to make the compiler do your work</li>
+              <li><span class="blue">Typed search</span> or how to make Pursuit do your work</li>
+              <li><span class="blue">Being lazy and leaving off types</span> or how to get PS to tell you</li>
             </ul>
           </section>
         </section>
