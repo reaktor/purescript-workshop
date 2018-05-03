@@ -5,7 +5,7 @@
 Update the Hacker Reader app to allow:
 
 * filtering results based on a filter text field
-* sorting by rank, time, or score
+* sorting by time or score
 
 ## Topics
 

@@ -3,31 +3,17 @@ module HackerNewsApi where
 import Prelude
 
 import Control.Monad.Aff (Aff)
-import Control.Monad.Except (runExcept)
 import Data.Either (Either)
 import Data.Foreign (MultipleErrors)
-import Data.Foreign.Class (class Decode)
-import Data.Foreign.Generic (decodeJSON, defaultOptions, genericDecode)
-import Data.Foreign.Generic.Types (Options)
-import Data.Generic.Rep (class Generic)
-import Data.Generic.Rep.Show (genericShow)
 import Data.String as Str
 import Network.HTTP.Affjax (AJAX)
 import Network.HTTP.Affjax as Affjax
+import Simple.JSON as SimpleJSON
 
-jsonDecodeOptions :: Options
-jsonDecodeOptions = defaultOptions { unwrapSingleConstructors = true }
-
-newtype QueryResult = QueryResult
+type QueryResult =
   { hits :: Array Story }
 
-derive instance genericQueryResult :: Generic QueryResult _
-instance showQueryResult :: Show QueryResult where
-  show = genericShow
-instance decodeQueryResult :: Decode QueryResult where
-  decode = genericDecode jsonDecodeOptions
-
-newtype Story = Story
+type Story =
   { author :: String
   , created_at :: String
   , objectID :: String
@@ -35,12 +21,6 @@ newtype Story = Story
   , points :: Int
   , title :: String
   , url :: String }
-
-derive instance genericStory :: Generic Story _
-instance showStory :: Show Story where
-  show = genericShow
-instance decodeStory :: Decode Story where
-  decode = genericDecode jsonDecodeOptions
 
 hackerNewsApi :: String
 hackerNewsApi = "https://hn.algolia.com/api/v1/search"
@@ -58,5 +38,5 @@ mkStoryTag id = "story_" <> show id
 fetchHackerNewsStories :: forall e. Aff (ajax :: AJAX | e) (Either MultipleErrors (Array Story))
 fetchHackerNewsStories = do
   result <- Affjax.get $ storiesUrl hackerNewsStoryIds
-  let (decoded :: Either MultipleErrors QueryResult) = runExcept $ decodeJSON result.response
-  pure $ (\(QueryResult {hits}) -> hits) <$> decoded
+  let (decoded :: Either MultipleErrors QueryResult) = SimpleJSON.readJSON result.response
+  pure $ _.hits <$> decoded

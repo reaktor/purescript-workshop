@@ -1,227 +1,125 @@
 module Main where
 
-import Prelude hiding (div)
+import Prelude
 
-import CSS (CSS, backgroundColor, display, fontSize, inline, margin, marginBottom, marginLeft, marginRight, padding, paddingTop, px, rgb, white, width)
-import Control.Monad.Aff (Aff)
 import Control.Monad.Eff (Eff)
-import Control.Monad.Eff.Class (liftEff)
-import Control.Monad.Eff.Console (CONSOLE, log)
-import Control.Monad.Eff.Exception (EXCEPTION)
-import Data.Array (filter, length, sortBy, zip, (..))
-import Data.Foldable (for_)
+import Data.Array as Array
 import Data.Maybe (Maybe(Just, Nothing))
-import Data.String (Pattern(Pattern), contains, joinWith, toLower)
-import Data.Tuple (Tuple(Tuple))
-import Pux (EffModel, start)
-import Pux.DOM.Events (onClick, onInput, targetValue)
-import Pux.DOM.HTML (HTML)
-import Pux.DOM.HTML.Attributes (style)
-import Pux.Renderer.React (renderToDOM)
-import Signal (constant)
-import Signal.Channel (CHANNEL)
-import Text.Smolder.HTML (a, div, h1, input, span)
-import Text.Smolder.HTML.Attributes (href, value)
-import Text.Smolder.Markup (text, (!), (#!))
+import Data.String as Str
+import Data.Tuple (Tuple(..))
+import HackerNewsApi (Story, hackerNewsStories)
+import Halogen as H
+import Halogen.Aff as HA
+import Halogen.HTML as HH
+import Halogen.HTML.Events as HE
+import Halogen.HTML.Properties as HP
+import Halogen.VDom.Driver (runUI)
 
-import HackerNewsApi (Story(Story), hackerNewsStories)
-
-data Event
-  = LoadFrontPage
-  | SetStories (Array Story)
-  | SetSortBy SortBy
-  | SetFilter String
-
-instance showEvent :: Show Event where
-  show LoadFrontPage = "load front page"
-  show (SetStories stories) = "set stories: " <> joinWith ", " (map show stories)
-  show (SetSortBy sort) = "set sort to: " <> show sort
-  show (SetFilter filter) = "set filter to '" <> filter <> "'"
-
-data SortBy = ByScore | ByTime
-
-instance showSortBy :: Show SortBy where
-  show ByScore = "by score"
-  show ByTime = "by time"
-
-newtype State = State
+type State =
   { filterText :: String
   , selectedSort :: SortBy
   , stories :: Array Story }
 
-instance showState :: Show State where
-  show (State { filterText, selectedSort, stories }) =
-    "Filter: " <> filterText <>
-    "\nSelected sort: " <> show selectedSort <>
-    "\nStories: " <> (joinWith ", " $ map show stories)
+data Query a
+  = SetSortBy SortBy a
+  | SetFilter String a
 
-initialState :: State
-initialState = State
-  { filterText: ""
-  , selectedSort: ByScore
-  , stories: [] }
+data SortBy = ByScore | ByTime
 
-foldp :: forall eff. Event -> State -> EffModel State Event (console :: CONSOLE | eff)
-foldp event@(LoadFrontPage) state = 
-  { state
-  , effects: [
-    do
-      _ <- logEvent event state
-      loadHackerNewsStories] }
-foldp event@(SetStories stories) (State state) =
-  { state: State $ state { stories = stories }
-  , effects: [logEvent event (State state)] }
-foldp event@(SetSortBy newSort) (State state) =
-  { state: State $ state { selectedSort = newSort }
-  , effects: [logEvent event (State state)] }
-foldp event@(SetFilter filterText) (State state) =
-  { state: State $ state { filterText = filterText }
-  , effects: [logEvent event (State state)] }
+foreign import formatTime :: String -> String
 
-loadHackerNewsStories :: forall e. Aff (console :: CONSOLE | e) (Maybe Event)
-loadHackerNewsStories = do
-  pure $ Just (SetStories hackerNewsStories)
-
-logEvent :: forall e. Event -> State -> Aff (console :: CONSOLE | e) (Maybe Event)
-logEvent event state = do
-  liftEff $ log (show event)
-  liftEff $ log (show state)
-  pure Nothing
-
-view :: State -> HTML Event
-view (State {filterText, selectedSort, stories}) =
-  div do
-    h1 ! style headerStyle $ do
-      text "Hacker Reader"
-      storyFilterInput filterText
-      sortButtons selectedSort
-    div ! style contentStyle $ do
-      div $ for_ sortedStories storyItem
+appComponent :: forall m. Array Story -> H.Component HH.HTML Query Unit Void m
+appComponent initialStories = H.component
+  { initialState: const initialState
+  , render
+  , eval
+  , receiver: const Nothing
+  }
   where
-    headerStyle :: CSS
-    headerStyle = do
-      backgroundColor (rgb 255 102 0)
-      margin (px 0.0) (px 0.0) (px 0.0) (px 0.0)
-      padding (px 10.0) (px 10.0) (px 10.0) (px 10.0)
+
+  initialState :: State
+  initialState =
+    { filterText : ""
+    , selectedSort: ByScore
+    , stories: initialStories }
+
+  render :: State -> H.ComponentHTML Query
+  render {filterText, selectedSort, stories} =
+    HH.div_
+      [ HH.div [HP.class_ (H.ClassName "header")]
+          [ HH.text "Hacker Reader"
+          , HH.input
+              [ HP.value filterText
+              , HP.class_ (H.ClassName "filter")
+              , HE.onValueInput \e -> Just (SetFilter e unit) ]
+          , HH.div [HP.class_ (H.ClassName "sort")]
+              [ sortItem selectedSort ByScore "Sort by score"
+              , sortItem selectedSort ByTime "Sort by time" ]
+          ]
+      , HH.div [HP.class_ (H.ClassName "content")] [ HH.div_ (map storyItem sortedStories) ]
+      ]
+    where
+      filteredStories = Array.filter (storyContainsText filterText) stories
+      storiesWithRank = Array.zip (Array.range 1 (Array.length stories + 1)) filteredStories
+      sortedStories = Array.sortBy (storySort selectedSort) storiesWithRank
+
+  eval :: forall a. Query a -> H.ComponentDSL State Query Void m a
+  eval query = case query of
+    SetSortBy selectedSort next -> do
+      state <- H.get
+      H.put (state { selectedSort = selectedSort })
+      pure next
+    SetFilter filterText next -> do
+      state <- H.get
+      H.put (state { filterText = filterText })
+      pure next
+
+sortItem :: SortBy -> SortBy -> String -> H.ComponentHTML Query
+sortItem selectedSort itemSort sortText =
+  HH.div
+    [ HP.classes sortItemStyles
+    , HE.onClick (\_ -> Just $ SetSortBy itemSort unit)]
+    [ HH.text sortText ]
+  where
+    sortItemStyles =
+      if isSortSelected selectedSort itemSort
+        then [H.ClassName "sortItem", H.ClassName "selected"]
+        else [H.ClassName "sortItem"]
       
-    contentStyle :: CSS
-    contentStyle = do
-      padding (px 10.0) (px 10.0) (px 10.0) (px 10.0)
-      
-    filteredStories = filter (storyContainsText filterText) stories
-    storiesWithRank = zip (1 .. (length stories + 1)) filteredStories
-    sortedStories = sortBy (storySort selectedSort) storiesWithRank
+    isSortSelected :: SortBy -> SortBy -> Boolean
+    isSortSelected ByTime ByTime = true
+    isSortSelected ByScore ByScore = true
+    isSortSelected _ _ = false
+
+storyItem :: forall i. Tuple Int Story -> H.ComponentHTML i
+storyItem (Tuple rank story) =
+  HH.div [HP.class_ (H.ClassName "storyItem")]
+    [ HH.div [HP.class_ (H.ClassName "rank")] [HH.text (show rank <> ".")]
+    , HH.a [HP.href story.url] [HH.text story.title]
+    , HH.div_
+      [ HH.div [HP.class_ (H.ClassName "points")] [HH.text (show story.points <> " points")]
+      , divider
+      , HH.div [HP.class_ (H.ClassName "author")] [HH.text story.author]
+      , divider
+      , HH.div [HP.class_ (H.ClassName "numComments")] [HH.text (show story.num_comments <> " comments")]
+      , divider
+      , HH.div [HP.class_ (H.ClassName "createdAt")] [HH.text (formatTime story.created_at)]]]
+
+storySort :: SortBy -> Tuple Int Story -> Tuple Int Story -> Ordering
+storySort ByTime (Tuple _ {created_at: time1}) (Tuple _ {created_at: time2})
+  = time2 `compare` time1
+storySort ByScore (Tuple _ {points: points1}) (Tuple _ {points: points2})
+  = points2 `compare` points1
 
 storyContainsText :: String -> Story -> Boolean
 storyContainsText "" _ = true
-storyContainsText filterText (Story {title}) = contains (Pattern filterText) (toLower title)
-
-storyFilterInput :: String -> HTML Event
-storyFilterInput filterText = input
-  ! value filterText
-  ! style filterStyle
-  #! onInput \e -> SetFilter $ targetValue e
-  where
-    filterStyle = do
-      marginLeft (px 20.0)
-      width (px 200.0)
-      fontSize (px 18.0)
-
-sortButtons :: SortBy -> HTML Event
-sortButtons sortBy =
-  div ! style sortStyle $ do
-    sortItem sortBy ByScore "Sort by score"
-    sortItem sortBy ByTime "Sort by date"
-  where
-    sortStyle = do
-      display inline
-      fontSize (px 18.0)
-      marginLeft (px 10.0)
-
-sortItem :: SortBy -> SortBy -> String -> HTML Event
-sortItem selectedSort itemSort sortText =
-  div
-    ! style sortItemStyle
-    #! onClick (\_ -> SetSortBy itemSort)
-    $ text sortText
-  where
-    sortItemStyle = if isSortSelected selectedSort itemSort
-                      then selectedStyle
-                      else unselectedStyle
-                           
-    selectedStyle = do
-      display inline
-      fontSize (px 18.0)
-      marginLeft (px 10.0)
-      padding (px 4.0) (px 4.0) (px 4.0) (px 4.0)
-      backgroundColor white
+storyContainsText filterText {title} =
+  Str.contains (Str.Pattern filterText) (Str.toLower title)
       
-    unselectedStyle = do
-      display inline
-      fontSize (px 18.0)
-      marginLeft (px 10.0)
-      
-isSortSelected :: SortBy -> SortBy -> Boolean
-isSortSelected ByTime ByTime = true
-isSortSelected ByScore ByScore = true
-isSortSelected _ _ = false
+divider :: forall p i. H.HTML p i
+divider = HH.span [HP.class_ (H.ClassName "divider")] [HH.text "|"]
 
-storySort :: SortBy -> Tuple Int Story -> Tuple Int Story -> Ordering
-storySort ByTime (Tuple _ (Story {created_at: time1})) (Tuple _ (Story {created_at: time2})) = time2 `compare` time1
-storySort ByScore (Tuple _ (Story {points: points1})) (Tuple _ (Story {points: points2})) = points2 `compare` points1
-
-storyItem :: Tuple Int Story -> HTML Event
-storyItem (Tuple rank (Story story)) =
-  div ! style (marginBottom (px 5.0)) $ do
-    div ! style rankStyle $ text (show rank <> ".")
-    a ! href story.url $ text story.title
-    div do
-      div ! style pointsStyle $ text (show story.points <> " points")
-      divider
-      div ! style authorStyle $ text story.author
-      divider
-      div ! style numCommentsStyle $ text (show story.num_comments <> " comments")
-      divider
-      div ! style numCommentsStyle $ text (story.created_at)
-
-rankStyle :: CSS
-rankStyle = do
-  display inline
-  marginRight (px 4.0)
-
-divider :: HTML Event
-divider = span ! style dividerStyle $ text "|"
-
-dividerStyle :: CSS
-dividerStyle = do
-  marginLeft (px 4.0)
-  marginRight (px 4.0)
-  
-pointsStyle :: CSS
-pointsStyle = do
-  fontSize (px 12.0)
-  paddingTop (px 2.0)
-  display inline
-  
-authorStyle :: CSS
-authorStyle = do
-  fontSize (px 12.0)
-  paddingTop (px 2.0)
-  display inline
-  
-numCommentsStyle :: CSS
-numCommentsStyle = do
-  marginRight (px 5.0)
-  fontSize (px 12.0)
-  paddingTop (px 2.0)
-  display inline
-  
-main :: forall eff. Eff (channel :: CHANNEL, console :: CONSOLE, exception :: EXCEPTION | eff) Unit
-main = do
-  app <- start
-    { initialState
-    , view
-    , foldp
-    , inputs: [constant LoadFrontPage]
-    }
-  renderToDOM "#app" app.markup app.input
+main :: Eff _ Unit
+main = HA.runHalogenAff do
+  body <- HA.awaitBody
+  runUI (appComponent hackerNewsStories) unit body

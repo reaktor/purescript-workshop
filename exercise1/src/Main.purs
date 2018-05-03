@@ -1,76 +1,48 @@
 module Main where
 
-import Prelude hiding (div)
+import Prelude
 
-import CSS (CSS, backgroundColor, margin, marginBottom, padding, px, rgb)
-import Control.Monad.Aff (Aff)
 import Control.Monad.Eff (Eff)
-import Data.Array (length, zip, (..))
-import Data.Foldable (for_)
-import Data.Maybe (Maybe(Just, Nothing))
-import Pux (EffModel, start)
-import Pux.DOM.HTML (HTML)
-import Pux.DOM.HTML.Attributes (style)
-import Pux.Renderer.React (renderToDOM)
-import Signal (constant)
-import Signal.Channel (CHANNEL)
-import Text.Smolder.HTML (div, h1)
-import Text.Smolder.Markup (text, (!))
-
+import Data.Maybe (Maybe(Just,Nothing))
 import HackerNewsApi (Story, hackerNewsStories)
-
-data Event
-  = LoadFrontPage
-  | SetStories (Array Story)
+import Halogen as H
+import Halogen.Aff as HA
+import Halogen.HTML as HH
+import Halogen.HTML.Properties as HP
+import Halogen.VDom.Driver (runUI)
 
 type State = { stories :: Array Story }
 
-initialState :: State
-initialState = { stories: [] }
+data Query a = DoNothing a
 
-foldp :: Event -> State -> EffModel State Event _
-foldp LoadFrontPage state = 
-  { state
-  , effects: [loadHackerNewsStories] }
-foldp (SetStories stories) state =
-  { state: state { stories = stories }
-  , effects: [] }
-
-loadHackerNewsStories :: forall e. Aff _ (Maybe Event)
-loadHackerNewsStories = do
-  pure $ Just (SetStories hackerNewsStories)
-
-view :: State -> HTML Event
-view {stories} =
-  div do
-    h1 ! style headerStyle $ do
-      text "Hacker Reader"
-    div ! style contentStyle $ do
-      div $ for_ stories storyItem
+appComponent :: forall m. Array Story -> H.Component HH.HTML Query Unit Void m
+appComponent initialStories = H.component
+  { initialState: const initialState
+  , render
+  , eval
+  , receiver: const Nothing
+  }
   where
-    headerStyle :: CSS
-    headerStyle = do
-      backgroundColor (rgb 255 102 0)
-      margin (px 0.0) (px 0.0) (px 0.0) (px 0.0)
-      padding (px 10.0) (px 10.0) (px 10.0) (px 10.0)
-      
-    contentStyle :: CSS
-    contentStyle = do
-      padding (px 10.0) (px 10.0) (px 10.0) (px 10.0)
-      
-    storiesWithRank = zip (1 .. (length stories + 1)) stories
 
-storyItem :: Story -> HTML Event
+  initialState :: State
+  initialState = { stories: initialStories }
+
+  render :: State -> H.ComponentHTML Query
+  render {stories} =
+    HH.div_
+      [ HH.div [HP.class_ (H.ClassName "header")] [HH.text "Hacker Reader"]
+      , HH.div [HP.class_ (H.ClassName "content")] [ HH.div_ (map storyItem stories) ]]
+
+  eval :: forall a. Query a -> H.ComponentDSL State Query Void m a
+  eval query = case query of
+    DoNothing next -> pure next
+
+storyItem :: forall i. Story -> H.ComponentHTML i
 storyItem story =
-  div ! style (marginBottom (px 5.0)) $ do
-    div $ text story.objectID
-  
+  HH.div [HP.class_ (H.ClassName "storyItem")]
+    [ HH.text story.objectID ]
+
 main :: Eff _ Unit
-main = do
-  app <- start
-    { initialState
-    , view
-    , foldp
-    , inputs: [constant LoadFrontPage]
-    }
-  renderToDOM "#app" app.markup app.input
+main = HA.runHalogenAff do
+  body <- HA.awaitBody
+  runUI (appComponent hackerNewsStories) unit body

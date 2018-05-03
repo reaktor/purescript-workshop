@@ -12,7 +12,7 @@ Modify the app to:
 ## Topics
 * Build tools
 * Basic syntax
-* Working with `CSS` and `HTML` types
+* Working with Halogen DOM types
 * Looking up and reading documentation
 
 ## Setup
@@ -22,22 +22,22 @@ Install the npm/Node version listed in .nvmrc. If you are using nvm, you can ins
 nvm install
 ```
 
-
-Install Node and Bower dependencies, including PureScript and PureScript build tools:
+Install Node and psc-package dependencies, including PureScript itself and PureScript build tools:
 ```
 npm install
+npm run psc -- install
 ```
 
-Start the app for development:
+Build the app for development (recompiling on changes):
 ```
-npm start
+npm run compile:watch
 ```
 
-Once the app has compiled, open [http://localhost:8080](http://localhost:8080) to see it. On file changes the project will be re-compiled and the browser will be refreshed. Change the text of the buttons in src/Main.purs, save the file, and verify that the button text is updated in the browser.
+Once the app has compiled, open the `public/index.html` file in your browser to see the app. On file changes the project will be re-compiled. Change the text of the header title in src/Main.purs, save the file, and verify that the text is updated in the browser.
 
 ## Editor setup
 
-You do not need to have any editor support, but it will be helpful to have your editor set up with a minimum of syntax highlighting and ideally in-line compiler errors as well.
+Editor support is not necessary but is quite useful for tools like syntax highlighting, in-line compiler errors, and automatic imports.
 
 For the Atom editor, you can set it up as follows:
 
@@ -47,4 +47,4 @@ For the Atom editor, you can set it up as follows:
 - Select File -> Add Project Folder and select the directory of this git repo.
 - Open src/Main.purs, add a syntax error, and verify that the IDE server has started and the syntax error is reported inline.
 
-There is also support for Vim, Emacs, and other editors. [See the instructions here](https://github.com/purescript/documentation/blob/master/ecosystem/Editor-and-tool-support.md), but you are on your own.
+There is also support for Vim, Emacs, and other editors. [See the instructions here](https://github.com/purescript/documentation/blob/master/ecosystem/Editor-and-tool-support.md), but you are on your own for the other editors.

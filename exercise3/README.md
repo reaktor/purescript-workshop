@@ -1,15 +1,18 @@
-# Exercise #3: Logging and type classes
+# Exercise #3: Time and the Foreign Function Interface
 
 ## Task
 
-Update the Hacker Reader app to:
-* log each event as it is processed, by defining an instance of the Show type class
+We receive dates from the Hacker News API, but they are formatted incorrectly.
 
-  I.e. so you can log events with `log (show event)`
-  
-* log each state of the app, by defining an instance for the Show type class
+* Format and display the date of each story as a human-readable string, using MomentJS and the PureScript FFI.
 
-  Hint: you can't define a type class for a record, but you can for a newtype that wraps a record e.g. `newtype State = State {...}`
+To get you started, install MomentJS by running
+
+```
+npm install --save moment
+```
+
+and then [check out the FFI example here](https://github.com/purescript/documentation/blob/master/guides/FFI.md#foreign-modules).
 
 ## Topics
-* Type classes
+* Foreign Function Interface (FFI) aka JavaScript interop

@@ -1,11 +1,11 @@
-# Exercise #4: Generic type classes
+# Exercise #4: The Network is Calling for Monads
 
 ## Task
 
-It turns out you don't need to write type classes instances by hand in some cases.
-* Rewrite the `Show` instances in the previous exercise to use `Generic` deriving based on [the examples here](https://github.com/purescript/purescript-generics-rep/blob/master/test/Main.purs).
+* Fetch the story data from the Hacker News API. A list of story IDs is provided.
 
-Useful packages: `purescript-generics-rep`
+You will need the `purescript-affjax` library to do the AJAX request.
 
 ## Topics
-* Generic deriving
+* Using the Aff monad
+* Using Affjax for network calls
