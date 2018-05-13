@@ -1,0 +1,26 @@
+{
+  "name": "purescript-workshop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "compile": "pulp --psc-package browserify --to public/client.js",
+    "compile:watch": "pulp --psc-package --watch browserify --to public/client.js",
+    "psc": "psc-package",
+    "pulp": "pulp --psc-package",
+    "repl": "pulp --psc-package repl",
+    "exercise1": "pulp --psc-package --watch test --main Test.Exercise1",
+    "exercise2": "pulp --psc-package --watch test --main Test.Exercise2",
+    "exercise3": "pulp --psc-package --watch test --main Test.Exercise3",
+    "exercise4": "pulp --psc-package --watch test --main Test.Exercise4",
+    "exercise5": "pulp --psc-package --watch test --main Test.Exercise5"
+  },
+  "dependencies": {
+    "psc-package": "0.3.2",
+    "pulp": "12.0.1",
+    "purescript": "0.11.7"
+  },
+  "devDependencies": {
+    "tap-spec": "4.1.1"
+  }
+}
