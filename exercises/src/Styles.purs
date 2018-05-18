@@ -19,12 +19,6 @@ content :: CSS
 content = do
   padding (px 10.0) (px 10.0) (px 10.0) (px 10.0)
 
-filter :: CSS
-filter = do
-  marginLeft (px 20.0)
-  width (px 200.0)
-  fontSize (px 18.0)
-
 rank :: CSS
 rank = do
   display inline

@@ -28,21 +28,18 @@ data Event
   = LoadFrontPage
   | SetStories (Array Story)
   | SetSortBy SortBy
-  | SetFilter String
 
 data SortBy = ByScore | ByTime
 
 type State =
-  { filterText :: String
-  , selectedSort :: SortBy
+  { selectedSort :: SortBy
   , stories :: Array Story }
 
 foreign import formatTime :: String -> String
 
 initialState :: State
 initialState =
-  { filterText: ""
-  , selectedSort: ByScore
+  { selectedSort: ByScore
   , stories: [] }
 
 foldp :: Event -> State -> { state :: State, effects :: Array (Aff _ (Maybe Event)) }
@@ -51,8 +48,6 @@ foldp (SetStories stories) state = { state: newState, effects: [] }
   where newState = state { stories = stories }
 foldp (SetSortBy newSort) state = { state: newState, effects: [] }
   where newState = state { selectedSort = newSort }
-foldp (SetFilter filterText) state = { state: newState , effects: [] }
-  where newState = state { filterText = filterText }
 
 loadHackerNewsStories :: Aff _ (Maybe Event)
 loadHackerNewsStories = do
@@ -64,36 +59,27 @@ loadHackerNewsStories = do
     Right stories -> pure $ Just (SetStories stories)
 
 view :: State -> HTML Event
-view {filterText, selectedSort, stories} = do
+view {selectedSort, stories} = do
   div ! style Styles.header $ do
     h1
       ! style Styles.headerTitle
       $ text "Hacker Reader"
-    input
-      #! onInput (\e -> SetFilter (targetValue e))
-      ! value filterText
-      ! style Styles.filter
-  div ! style Styles.sort $ do
-    div ! style (sortItemStyle ByScore)
-      #! onClick (\_ -> SetSortBy ByScore)
-      $ text "Sort by score"
-    div ! style (sortItemStyle ByTime)
-      #! onClick (\_ -> SetSortBy ByTime)
-      $ text "Sort by date"
+    div ! style Styles.sort $ do
+      div ! style (sortItemStyle ByScore)
+        #! onClick (\_ -> SetSortBy ByScore)
+        $ text "Sort by score"
+      div ! style (sortItemStyle ByTime)
+        #! onClick (\_ -> SetSortBy ByTime)
+        $ text "Sort by date"
   div ! style Styles.content $ do
     for_ sortedStories storyItem
   where
-    filteredStories = Array.filter (storyContainsText filterText) stories
-    storiesWithRank = Array.zip (Array.range 1 (Array.length stories + 1)) filteredStories
+    storiesWithRank = Array.zip (Array.range 1 (Array.length stories + 1)) stories
     sortedStories = Array.sortBy (storySort selectedSort) storiesWithRank
     sortItemStyle sort =
       if isSortSelected selectedSort sort
          then Styles.selected
          else Styles.unselected
-
-storyContainsText :: String -> Story -> Boolean
-storyContainsText "" _ = true
-storyContainsText filterText {title} = Str.contains (Str.Pattern filterText) (Str.toLower title)
       
 isSortSelected :: SortBy -> SortBy -> Boolean
 isSortSelected ByTime ByTime = true
