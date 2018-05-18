@@ -66,29 +66,13 @@ loadHackerNewsStories = do
 view :: State -> HTML Event
 view {filterText, selectedSort, stories} = do
   div ! style Styles.header $ do
-    h1 ! style Styles.headerTitle $ text "Hacker Reader"
-    storyFilterInput filterText
-    sortButtons selectedSort
-  div ! style Styles.content $ do
-    for_ sortedStories storyItem
-  where
-    filteredStories = Array.filter (storyContainsText filterText) stories
-    storiesWithRank = Array.zip (Array.range 1 (Array.length stories + 1)) filteredStories
-    sortedStories = Array.sortBy (storySort selectedSort) storiesWithRank
-
-storyContainsText :: String -> Story -> Boolean
-storyContainsText "" _ = true
-storyContainsText filterText {title} = Str.contains (Str.Pattern filterText) (Str.toLower title)
-
-storyFilterInput :: String -> HTML Event
-storyFilterInput filterText =
-  input
-    #! onInput (\e -> SetFilter (targetValue e))
-    ! value filterText
-    ! style Styles.filter
-  
-sortButtons :: SortBy -> HTML Event
-sortButtons sortBy =
+    h1
+      ! style Styles.headerTitle
+      $ text "Hacker Reader"
+    input
+      #! onInput (\e -> SetFilter (targetValue e))
+      ! value filterText
+      ! style Styles.filter
   div ! style Styles.sort $ do
     div ! style (sortItemStyle ByScore)
       #! onClick (\_ -> SetSortBy ByScore)
@@ -96,11 +80,20 @@ sortButtons sortBy =
     div ! style (sortItemStyle ByTime)
       #! onClick (\_ -> SetSortBy ByTime)
       $ text "Sort by date"
+  div ! style Styles.content $ do
+    for_ sortedStories storyItem
   where
+    filteredStories = Array.filter (storyContainsText filterText) stories
+    storiesWithRank = Array.zip (Array.range 1 (Array.length stories + 1)) filteredStories
+    sortedStories = Array.sortBy (storySort selectedSort) storiesWithRank
     sortItemStyle sort =
-      if isSortSelected sortBy sort
+      if isSortSelected selectedSort sort
          then Styles.selected
          else Styles.unselected
+
+storyContainsText :: String -> Story -> Boolean
+storyContainsText "" _ = true
+storyContainsText filterText {title} = Str.contains (Str.Pattern filterText) (Str.toLower title)
       
 isSortSelected :: SortBy -> SortBy -> Boolean
 isSortSelected ByTime ByTime = true
