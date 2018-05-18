@@ -8,12 +8,12 @@
     "pulp": "pulp --psc-package",
     "repl": "pulp --psc-package repl",
     "postinstall": "psc-package install",
-    "exercises:all": "pulp --psc-package --watch test --main Test.Main -- censor-codes=WildcardInferredType | tap-spec",
+    "exercises:all": "pulp --psc-package --watch test --main Test.Main | tap-spec",
     "exercise1": "pulp --psc-package --watch test --main Test.Exercise1 | tap-spec",
     "exercise2": "pulp --psc-package --watch test --main Test.Exercise2 | tap-spec",
     "exercise3": "pulp --psc-package --watch test --main Test.Exercise3 | tap-spec",
     "exercise4": "pulp --psc-package --watch test --main Test.Exercise4 | tap-spec",
-    "exercise5": "pulp --psc-package --watch browserify --main HackerReader.Main --to public/client.js -- censor-codes=WildcardInferredType"
+    "exercise5": "pulp --psc-package --watch browserify --main HackerReader.Main --to public/client.js"
   },
   "dependencies": {
     "create-react-class": "15.6.3",
