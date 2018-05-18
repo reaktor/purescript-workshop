@@ -50,7 +50,6 @@ nvm install
 Install Node and psc-package dependencies, including PureScript itself and PureScript build tools:
 ```
 npm install
-npm run psc -- install
 ```
 
 ## Exercises 1-4

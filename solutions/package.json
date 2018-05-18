@@ -7,6 +7,7 @@
     "psc": "psc-package",
     "pulp": "pulp --psc-package",
     "repl": "pulp --psc-package repl",
+    "postinstall": "psc-package install",
     "exercises:all": "pulp --psc-package --watch test --main Test.Main | tap-spec",
     "exercise1": "pulp --psc-package --watch test --main Test.Exercise1 | tap-spec",
     "exercise2": "pulp --psc-package --watch test --main Test.Exercise2 | tap-spec",
