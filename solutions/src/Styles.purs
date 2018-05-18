@@ -48,6 +48,13 @@ numComments = do
   fontSize (px 12.0)
   paddingTop (px 2.0)
   display inline
+  
+date :: CSS
+date = do
+  marginRight (px 5.0)
+  fontSize (px 12.0)
+  paddingTop (px 2.0)
+  display inline
 
 sort :: CSS
 sort = do

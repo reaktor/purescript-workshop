@@ -99,7 +99,7 @@ storyItem story =
       divider
       div ! style Styles.numComments $ text (show story.num_comments <> " comments")
       divider
-      div ! style Styles.numComments $ text (formatTime story.created_at)
+      div ! style Styles.date $ text (formatTime story.created_at)
 
 divider :: HTML Event
 divider = span ! style Styles.divider $ text "|"
