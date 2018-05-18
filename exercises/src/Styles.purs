@@ -19,11 +19,6 @@ content :: CSS
 content = do
   padding (px 10.0) (px 10.0) (px 10.0) (px 10.0)
 
-rank :: CSS
-rank = do
-  display inline
-  marginRight (px 4.0)
-
 divider :: CSS
 divider = do
   marginLeft (px 4.0)

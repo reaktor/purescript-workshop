@@ -25,11 +25,6 @@ filter = do
   width (px 200.0)
   fontSize (px 18.0)
 
-rank :: CSS
-rank = do
-  display inline
-  marginRight (px 4.0)
-
 divider :: CSS
 divider = do
   marginLeft (px 4.0)

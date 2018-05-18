@@ -11,7 +11,6 @@ import Data.Either (Either(Left,Right))
 import Data.Foldable (for_)
 import Data.Maybe (Maybe(Just, Nothing))
 import Data.String as Str
-import Data.Tuple (Tuple(Tuple))
 import HackerReader.HackerNewsApi (Story, fetchHackerNewsStories)
 import HackerReader.Styles as Styles
 import Pux as Pux
@@ -74,8 +73,7 @@ view {selectedSort, stories} = do
   div ! style Styles.content $ do
     for_ sortedStories storyItem
   where
-    storiesWithRank = Array.zip (Array.range 1 (Array.length stories + 1)) stories
-    sortedStories = Array.sortBy (storySort selectedSort) storiesWithRank
+    sortedStories = Array.sortBy (storySort selectedSort) stories
     sortItemStyle sort =
       if isSortSelected selectedSort sort
          then Styles.selected
@@ -86,14 +84,13 @@ isSortSelected ByTime ByTime = true
 isSortSelected ByScore ByScore = true
 isSortSelected _ _ = false
 
-storySort :: SortBy -> Tuple Int Story -> Tuple Int Story -> Ordering
-storySort ByTime (Tuple _ {created_at: time1}) (Tuple _ {created_at: time2}) = time2 `compare` time1
-storySort ByScore (Tuple _ {points: points1}) (Tuple _ {points: points2}) = points2 `compare` points1
+storySort :: SortBy -> Story -> Story -> Ordering
+storySort ByTime {created_at: time1} {created_at: time2} = time2 `compare` time1
+storySort ByScore {points: points1} {points: points2} = points2 `compare` points1
 
-storyItem :: Tuple Int Story -> HTML Event
-storyItem (Tuple rank story) =
+storyItem :: Story -> HTML Event
+storyItem story =
   div ! style (marginBottom (px 5.0)) ! key story.objectID $ do
-    div ! style Styles.rank $ text (show rank <> ".")
     a ! href story.url $ text story.title
     div do
       div ! style Styles.points $ text (show story.points <> " points")
