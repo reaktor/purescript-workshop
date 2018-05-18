@@ -14,10 +14,8 @@ type QueryResult =
   { hits :: Array Story }
 
 type Story = 
-  { author :: String
-  , created_at :: String
+  { created_at :: String
   , objectID :: String
-  , num_comments :: Int
   , points :: Int
   , title :: String
   , url :: String }

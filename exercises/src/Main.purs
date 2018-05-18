@@ -10,17 +10,16 @@ import Data.Array as Array
 import Data.Either (Either(Left,Right))
 import Data.Foldable (for_)
 import Data.Maybe (Maybe(Just, Nothing))
-import Data.String as Str
 import HackerReader.HackerNewsApi (Story, fetchHackerNewsStories)
 import HackerReader.Styles as Styles
 import Pux as Pux
-import Pux.DOM.Events (onClick, onInput, targetValue)
+import Pux.DOM.Events (onClick)
 import Pux.DOM.HTML (HTML)
 import Pux.DOM.HTML.Attributes (key, style)
 import Pux.Renderer.React (renderToDOM)
 import Signal (constant)
-import Text.Smolder.HTML (a, div, h1, input, span)
-import Text.Smolder.HTML.Attributes (href, value)
+import Text.Smolder.HTML (a, div, h1, span)
+import Text.Smolder.HTML.Attributes (href)
 import Text.Smolder.Markup (text, (!), (#!))
 
 data Event
@@ -94,10 +93,6 @@ storyItem story =
     a ! href story.url $ text story.title
     div do
       div ! style Styles.points $ text (show story.points <> " points")
-      divider
-      div ! style Styles.author $ text story.author
-      divider
-      div ! style Styles.numComments $ text (show story.num_comments <> " comments")
       divider
       div ! style Styles.date $ text (formatTime story.created_at)
 
