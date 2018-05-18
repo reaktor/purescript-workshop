@@ -3,19 +3,16 @@ module Test.Exercise4 where
 import Prelude
 
 import Control.Monad.Eff (Eff)
-import Data.Array as Array
-import Data.Foldable (all)
-import Data.Record (class EqualFields)
-import Data.Record as Record
-import Data.Tuple (Tuple(Tuple))
-import HackerNewsApi (Story, hackerNewsStories)
-import Test.Unit (TestSuite, suite, test)
+import Test.Unit (TestSuite, suite, suiteSkip, test)
 import Test.Unit.Assert as Assert
-import Test.Unit.Main (runTest)
-import Type.Row (class RowToList)
+import Test.Unit.Main (run, runTestWith)
+import Test.Unit.Output.TAP (runTest)
 
 main :: Eff _ Unit
-main = runTest $ do
-  suite "Type classes" do
-    test "use type classes" do
+main = run (runTestWith runTest tests)
+
+tests :: TestSuite _
+tests = do
+  suiteSkip "Ex 4 (type classes)" do
+    test "1 use type classes" do
       Assert.equal 1 0

@@ -3,6 +3,11 @@
   "set": "psc-0.11.7",
   "source": "https://github.com/purescript/package-sets.git",
   "depends": [
+    "simple-json",
+    "affjax",
+    "aff",
+    "css",
+    "pux",
     "psci-support",
     "test-unit",
     "console",

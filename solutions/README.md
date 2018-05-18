@@ -1,6 +1,6 @@
 # Exercise #1: Types and functions
 
-## Setup
+## Getting started
 
 Install the npm/Node version listed in .nvmrc. If you are using nvm, you can install it with
 ```
@@ -13,9 +13,9 @@ npm install
 npm run psc -- install
 ```
 
-Compile app and run tests (re-running on changes):
+Compile app and run the first exercise (this re-compiles and runs on changes):
 ```
-npm run test:watch
+npm run exercise1
 ```
 
 There is one failing test. Write code to make it pass. Then uncomment the next test, watch it fail, and then make that one pass, too. Continue until there are no more tests to complete.
