@@ -5,14 +5,12 @@ import Prelude
 import Control.Monad.Eff (Eff)
 import Data.Array as Array
 import Data.Foldable (all, sum)
-import Data.Record (class EqualFields)
-import Data.Record as Record
 import Data.Tuple (Tuple(Tuple))
-import Test.Unit (TestSuite, suite, test, testSkip)
+import Test.Helpers (assertRecordArrayEqual, assertRecordEqual, eqRecordArrays)
+import Test.Unit (Test, TestSuite, failure, success, suite, test, testSkip)
 import Test.Unit.Assert as Assert
 import Test.Unit.Main (run, runTestWith)
 import Test.Unit.Output.TAP (runTest)
-import Type.Row (class RowToList)
 
 type Story = 
   { author :: String
@@ -93,11 +91,9 @@ tests =
         (getStreet { street: "123 Barry St", city: "P-town" })
 
     test "2 Record: update field" do
-      Assert.assert
-        "Records are not equal"
-        (Record.equal
-            { street: "127 Barry St", city: "P-town" }
-            (updateStreet "127 Barry St" { street: "123 Barry St", city: "P-town" }))
+      assertRecordEqual
+        { street: "127 Barry St", city: "P-town" }
+        (updateStreet "127 Barry St" { street: "123 Barry St", city: "P-town" })
 
     test "3 Record: print fields to string" do
       Assert.equal
@@ -120,9 +116,7 @@ tests =
         (listHighPointStoryIds hackerNewsStories)
 
     test "7 Find the stories shared by author \"paf31\"" do
-      Assert.assert
-        "You did not find Phil's links"
-        (eqRecordArrays
+      assertRecordArrayEqual
         [{created_at: "2013-11-01T03:09:13.000Z",
             title: "PureScript",
             url: "http://github.com/paf31/purescript",
@@ -130,7 +124,7 @@ tests =
             points: 59,
             num_comments: 17,
             objectID: "6651572"}]
-        (philStories hackerNewsStories))
+        (philStories hackerNewsStories)
       
 type Address = { street :: String, city :: String }
 
@@ -175,11 +169,3 @@ listHighPointStoryIds stories = stories
 
 philStories :: Array Story -> Array Story
 philStories stories = Array.filter (\story -> story.author == "paf31") stories
-
--- Helpers
-eqRecordArrays :: forall r rs
-                  . RowToList r rs
-                  => EqualFields rs r
-                  => Array { | r } -> Array { | r } -> Boolean
-eqRecordArrays arr1 arr2 | Array.length arr1 /= Array.length arr2 = false
-eqRecordArrays arr1 arr2 = all (\(Tuple r1 r2) -> Record.equal r1 r2) $ Array.zip arr1 arr2

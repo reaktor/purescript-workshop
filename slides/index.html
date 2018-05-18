@@ -37,8 +37,8 @@
           <h2>What are we doing here?</h2>
           <div>
             <span class="fragment">
-              <h3 class="fragment strike">Learn PureScript</h3>
-              <h3 class="fragment blue">Try PureScript</h3>
+              <h3 class="fragment strike">Learning PureScript</h3>
+              <h3 class="fragment blue">Trying PureScript</h3>
             </span>
             <h3 class="fragment">Time: 2.5 hours (short!)</h3>
             <h3 class="fragment"><span class="yellow">Goal #1:</span> Little talking, much coding</h3>
@@ -388,7 +388,7 @@ zip :: forall a b. Array a -> Array b -> Array (Tuple a b)
             <h3>Pattern matching and ADTs</h3>
           </section>
           <section>
-            <h3>Pattern matching on functions</h3>
+            <h3>Pattern matching: functions</h3>
 				<pre><code class="hljs" data-trim>
 gcd :: Int -> Int -> Int
 gcd n 0 = n
@@ -425,6 +425,10 @@ showPerson { first: x, last: y } = y <> ", " <> x
 
 showPerson :: { first :: String, last :: String } -> String
 showPerson { first, last } = first <> ", " <> last
+
+-- This is equivalent to
+showPerson :: { first :: String, last :: String } -> String
+showPerson { first: first, last: last } = first <> ", " <> last
 				</code></pre>
           </section>
           <section>
@@ -499,11 +503,9 @@ show (Left errors) = "Errors: " <> show errors
 newtype PhoneNumber = PhoneNumber String
 newtype UserId = UserId Int
 
--- Works the same as
+-- ~equivalent to this, except at run time
 data PhoneNumber = PhoneNumber String
 data UserId = UserId Int
-
--- (except at run time)
 				</code></pre>
           </section>
 
