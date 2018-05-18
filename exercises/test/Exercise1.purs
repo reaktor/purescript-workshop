@@ -92,34 +92,34 @@ tests =
         "123 Barry St"
         (getAddress { street: "123 Barry St", city: "P-town" })
 
-    test "2 Record: update field" do
+    testSkip "2 Record: update field" do
       Assert.assert
         "Records are not equal"
         (Record.equal
             { street: "127 Barry St", city: "P-town" }
             (updateStreet "127 Barry St" { street: "123 Barry St", city: "P-town" }))
 
-    test "3 Record: print fields to string" do
+    testSkip "3 Record: print fields to string" do
       Assert.equal
         "123 Barry St, P-town"
         (showAddress { street: "123 Barry St", city: "P-town" })
 
-    test "4 Functions: sum numbers" do
+    testSkip "4 Functions: sum numbers" do
       Assert.equal
         203
         (sumNumbers [3, 7, 5, 12, 176])
 
-    test "5 List the authors of the sample Hacker News stories" do
+    testSkip "5 List the authors of the sample Hacker News stories" do
       Assert.equal
         ["bpierre", "pka", "sharkdp", "paf31", "dstronczak", "purescript"]
         (listAuthors hackerNewsStories)
 
-    test "6 List the IDs of stories with more than 100 points" do
+    testSkip "6 List the IDs of stories with more than 100 points" do
       Assert.equal
         ["8351981", "13551404", "9644324"]
         (listHighPointStoryIds hackerNewsStories)
 
-    test "7 Find the stories shared by author \"paf31\"" do
+    testSkip "7 Find the stories shared by author \"paf31\"" do
       Assert.assert
         "You did not find Phil's links"
         (eqRecordArrays
@@ -135,46 +135,25 @@ tests =
 type Address = { street :: String, city :: String }
 
 getAddress :: Address -> String
-getAddress address = address.street
+getAddress address = ""
 
 updateStreet :: String -> Address -> Address
-updateStreet newStreet address = address { street = newStreet }
+updateStreet newStreet address = address
 
 showAddress :: Address -> String
-showAddress address = address.street <> ", " <> address.city
+showAddress address = ""
 
 sumNumbers :: Array Int -> Int
-sumNumbers nums = sum nums
+sumNumbers nums = 0
 
 listAuthors :: Array Story -> Array String
-listAuthors stories = map (\story -> story.author) stories
--- Or equivalently
--- listAuthors stories = map _.author stories
+listAuthors stories = []
 
 listHighPointStoryIds :: Array Story -> Array String
--- listHighPointStoryIds stories =
---   map (\story -> story.objectID) $
---   Array.filter (\story -> story.points > 100) stories
-
--- Or more succinctly:
--- listHighPointStoryIds stories =
---   map _.objectID $
---   Array.filter (\{points} -> points > 100) stories
-
--- Or using "pipe" style
--- listHighPointStoryIds stories = stories
---   # Array.filter (\story -> story.points > 100)
---   # map _.objectID
-
--- Or adding local variables:
-listHighPointStoryIds stories = stories
-  # Array.filter hasHighPoints
-  # map _.objectID
-  where
-    hasHighPoints story = story.points > 100
+listHighPointStoryIds stories = []
 
 philStories :: Array Story -> Array Story
-philStories stories = Array.filter (\story -> story.author == "paf31") stories
+philStories stories = stories
 
 -- Helpers
 eqRecordArrays :: forall r rs
