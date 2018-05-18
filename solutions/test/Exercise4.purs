@@ -137,6 +137,10 @@ main = run (runTestWith runTest tests)
 tests :: TestSuite _
 tests = do
   suite "Ex 4 (network)" do
+    test "parse the author of the first PureScript commit" do
+      Assert.equal
+        (Right "Phil Freeman")
+        (parseAuthor firstPureScriptCommit)
     test "parse the SHA commit hash for first PureScript commit" do
       Assert.equal
         (Right "291a6d4ddd88c65a8a0c5368441c1b7c639ca854")
@@ -144,11 +148,16 @@ tests = do
     test "find the date of the first commit to the public PureScript repo" do
       commit <- fetchGitHubCommit
       Assert.equal (Right "asdf2013-09-30T05:29:23Z") (_.commit.author.date <$> commit)
+      
+parseAuthor :: String -> Either MultipleErrors String
+parseAuthor commitStr = do
+  (parsed :: { commit :: { author :: { name :: String } } }) <- SimpleJSON.readJSON commitStr
+  pure parsed.commit.author.name
 
 parseCommitHash :: String -> Either MultipleErrors String
 parseCommitHash commitStr = do
   (parsed :: { url :: String }) <- SimpleJSON.readJSON commitStr
-  pure (parsed.url)
+  pure parsed.url
 
 gitHubApiUrl :: String
 gitHubApiUrl = "https://api.github.com/repos/purescript/purescript/commits/291a6d4ddd88c65a8a0c5368441c1b7c639ca854"

@@ -18,7 +18,7 @@ Each exercise is preceded by a short presentation of related PureScript language
     1. Exercise #1: Types, functions, and Hacker News
     1. Exercise #2: ADTs, sorting, and filtering
     1. Exercise #3: Time and the Foreign Function Interface (FFI)
-    1. Exercise #4: Type classes
+    1. Exercise #4: The network is calling for monads
     1. Exercise #5: Pux web application
 1. Conclusion & discussion
 

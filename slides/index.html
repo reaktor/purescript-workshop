@@ -56,10 +56,12 @@
             <li class="fragment"><span class="yellow">Code:</span> Exercise #1</li>
             <li class="fragment"><span class="blue">Talk:</span> ADTs and pattern matching</li>
             <li class="fragment"><span class="yellow">Code:</span> Exercise #2</li>
-            <li class="fragment"><span class="blue">Talk:</span> Type classes</li>
+            <li class="fragment"><span class="blue">Talk:</span> Working with JavaScript</li>
             <li class="fragment"><span class="yellow">Code:</span> Exercise #3</li>
-            <li class="fragment"><span class="blue">Talk:</span> Pux UI library</li>
+            <li class="fragment"><span class="blue">Talk:</span> Type classes</li>
             <li class="fragment"><span class="yellow">Code:</span> Exercise #4</li>
+            <li class="fragment"><span class="blue">Talk:</span> Pux UI library</li>
+            <li class="fragment"><span class="yellow">Code:</span> Exercise #5</li>
             <li class="fragment">Wrap-up and feedback</li>
             </ol>
           </div>
@@ -97,7 +99,7 @@
         </section>
 				<section>
           <section>
-            <h3>Basic types</h3>
+            <h2>Basic types</h2>
           </section>
           <section>
             <h3>(but first open the REPL)</h3>
@@ -187,7 +189,7 @@ type Log = Array String
 
         <section>
           <section>
-            <h3>Functions</h3>
+            <h2>Functions</h2>
           </section>
           <section>
             <h3>Some functions</h3>
@@ -372,7 +374,7 @@ zip :: forall a b. Array a -> Array b -> Array (Tuple a b)
         </section>
         <section>
           <section>
-            <h3>How to cheat with types</h3>
+            <h2>How to cheat in PureScript</h2>
             <ul>
               <li><span class="blue">Type holes</span> or how to make the compiler do your work</li>
               <li><span class="blue">Typed search</span> or how to make Pursuit do your work</li>
@@ -385,7 +387,7 @@ zip :: forall a b. Array a -> Array b -> Array (Tuple a b)
         </section>
 				<section>
           <section>
-            <h3>Pattern matching and ADTs</h3>
+            <h2>Pattern matching and ADTs</h2>
           </section>
           <section>
             <h3>Pattern matching: functions</h3>
@@ -515,14 +517,108 @@ data UserId = UserId Int
             <h3>Exercise #2: Pattern matching and ADTs</h3>
           </section>
         </section>
+        <section>
 				<section>
-          <section>
-            <h3>Exercise #3: Working with JavaScript</h3>
-          </section>
+          <h2>Working with JavaScript</h2>
+        </section>
+				<section>
+          <h2>Working with JavaScript</h2>
+          <ul>
+            <li class="fragment">PureScript is strict (unlike Haskell)</li>
+            <li class="fragment">PureScript has no runtime (unlike Elm, ClojureScript, GHCJS)</li>
+            <li class="fragment">Calling JavaScript from PureScript is easy</li>
+            <li class="fragment">Calling PureScript from JavaScript is easy</li>
+            <li class="fragment"><a href="https://blog.ndk.io/purescript-ffi.html">Wrapping JavaScript safely requires some thought</a></li>
+          </ul>
+        </section>
+				<section data-background="#dddddd">
+          <h3 style="color: black;">Example: calling JavaScript from PureScript</h3>
+          <pre><code class="hljs language-haskell" data-trim>
+          -- Main.purs (PureScript)
+          foreign import pow :: Number -> Number -> Number
+				  </code></pre>
+          <pre><code class="hljs language-javascript" data-trim>
+          // Main.js (JavaScript)
+          exports.pow = function(x) {
+            return function(y) {
+              return Math.pow(x, y)
+            }
+          }
+				  </code></pre>
+        </section>
+				<section data-background="#dddddd">
+          <h3 style="color: black;">Example: using JS YAML parser from PureScript</h3>
+          <pre><code class="hljs language-bash" data-trim>
+          # Install JS dependency
+          npm install --save js-yaml
+				  </code></pre>
+
+          <pre><code class="hljs" data-trim>
+-- PureScript
+module Kubernetes.Yaml where
+
+foreign import safeLoadImpl ::
+  forall e. String -> Eff (exception :: EXCEPTION | e) Foreign
+
+data YamlError = YamlError Error
+
+safeLoad :: String -> Either (NonEmptyList YamlError) Foreign
+safeLoad str = runPure $ do
+  loaded <- try (safeLoadImpl str)
+  pure (bimap (pure <<< YamlError) id loaded)
+				  </code></pre>
+          <pre><code class="hljs language-javascript" data-trim>
+// JavaScript
+exports.safeLoadImpl = function(str){
+  return function(){
+    const yaml = require('js-yaml')
+    return yaml.safeLoad(str)
+  }
+}
+				  </code></pre>
+        </section>
+				<section data-background="#dddddd">
+          <h3 style="color: black;">Example: calling PureScript from JavaScript</h3>
+          <pre><code class="hljs" data-trim>
+-- PureScript
+module FancyComponent where
+
+toReact :: forall props. State -> Eff _ (ReactClass props)
+toReact state = do
+  app <- start
+    { initialState: state
+    , view
+    , foldp
+    , inputs: []
+    }
+  renderToReact app.markup app.input
+				  </code></pre>
+          <pre><code class="hljs language-javascript" data-trim>
+// JavaScript
+const FancyComponent = PS.FancyComponent.toReact(state)()
+				  </code></pre>
+        </section>
+        </section>
+				<section>
+          <h3>Exercise #3: Working with JavaScript</h3>
+
+          <h4>Example from earlier:</h4>
+          <pre><code class="hljs" data-trim>
+          -- Main.purs (PureScript)
+          foreign import pow :: Number -> Number -> Number
+				  </code></pre>
+          <pre><code class="hljs" data-trim>
+          // Main.js (JavaScript)
+          exports.pow = function(x) {
+            return function(y) {
+              return Math.pow(x, y)
+            }
+          }
+				  </code></pre>
         </section>
 				<section>
           <section>
-            <h3>Type classes</h4>
+            <h3>A word on <span class="yellow">type classes</span></h4>
           </section>
           <section>
             <h3>What is a type class?</h4>
@@ -547,6 +643,7 @@ instance showBoolean :: Show Boolean where
   show false = "false"
 
 -- So you can define functions like this:
+--type class constraint vvvvvv
 formatMsg :: forall a. (Show a) => a -> String
 formatMsg val = "search-service: " <> show val
 				</code></pre>
