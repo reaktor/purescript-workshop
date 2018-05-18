@@ -90,7 +90,7 @@ tests =
     test "1 Record: get field" do
       Assert.equal
         "123 Barry St"
-        (getAddress { street: "123 Barry St", city: "P-town" })
+        (getStreet { street: "123 Barry St", city: "P-town" })
 
     testSkip "2 Record: update field" do
       Assert.assert
@@ -134,8 +134,8 @@ tests =
       
 type Address = { street :: String, city :: String }
 
-getAddress :: Address -> String
-getAddress address = ""
+getStreet :: Address -> String
+getStreet address = ""
 
 updateStreet :: String -> Address -> Address
 updateStreet newStreet address = address
