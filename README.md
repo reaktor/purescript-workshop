@@ -40,7 +40,7 @@ There is also support for Vim, Emacs, and other editors. [See the instructions h
 
 ## Getting started
 
-Run all of the following commands from the [exercises] directory.
+Run all of the following commands from the `exercises` directory.
 
 Install the npm/Node version listed in .nvmrc. If you are using nvm, you can install it with
 ```
@@ -54,12 +54,12 @@ npm install
 
 ## Exercises 1-4
 
-Run the following command to compile the first exercises and run tests. This will re-compile the code and re-run tests whenever the code changes.
+Run the following command from the `exercises` directory to compile the first exercises and run tests. This will re-compile the code and re-run tests whenever the code changes.
 ```
 npm run exercises:all
 ```
 
-This should compile successfully and display one failing test in [exercises/test/Exercise1.purs]. Open that file in your editor and write code to make that test pass. There are other tests or test suites within the same file prefixed by `skip`, as in `skipTest` and `skipSuite`. Remove the `skip` portion from the next test to proceed. Now make that test pass.
+This should compile successfully and display one failing test in [exercises/test/Exercise1.purs](exercises/test/Exercise1.purs). Open that file in your editor and write code to make that test pass. There are other tests or test suites within the same file prefixed by `skip`, as in `skipTest` and `skipSuite`. Remove the `skip` portion from the next test to proceed. Now make that test pass.
 
 The first four exercises correspond to four test files in the `exercises/test/` directory.
 
@@ -71,7 +71,7 @@ In the final exercise, we add features to a front end Pux web application. The a
 npm run exercise5
 ```
 
-The web application can be viewed by opening the file [exercises/public/index.html] in your browser. The source code will be recompiled and re-bundled on changes, and changes can be viewed in the browser by refreshing the page. The specific tasks themselves are described in the [slides](https://reaktor.github.io/purescript-workshop-breakpoint).
+The web application can be viewed by opening the file [exercises/public/index.html](exercises/public/index.html) in your browser. The source code will be recompiled and re-bundled on changes, and changes can be viewed in the browser by refreshing the page. The specific tasks themselves are described in the [slides](https://reaktor.github.io/purescript-workshop-breakpoint).
 
 ## Helpful Resources
 
