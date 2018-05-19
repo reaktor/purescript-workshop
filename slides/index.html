@@ -376,11 +376,70 @@ zip :: forall a b. Array a -> Array b -> Array (Tuple a b)
           <section>
             <h2>How to cheat in PureScript</h2>
             <ul>
+              <li><span class="blue">Just leave the type off</span> (for top level definitions)</li>
               <li><span class="blue">Type holes</span> or how to make the compiler do your work</li>
               <li><span class="blue">Typed search</span> or how to make Pursuit do your work</li>
-              <li><span class="blue">Being lazy and leaving off types</span> or how to get PS to tell you</li>
             </ul>
           </section>
+          <section style="text-align: left;">
+            <h2>Leaving the type off</h2>
+        <h3>Code:</h3>
+				<pre><code class="hljs" data-trim>
+doThing a b = "Doin my thing with " <> a <> ", " <> b
+				</code></pre>
+        <h3>Compiler:</h3>
+				<pre><code class="hljs" data-trim>
+Warning 4 of 6:
+
+  in module Main
+  at src/Main.purs line 892, column 1 - line 892, column 54
+
+    No type declaration was provided for the top-level declaration of doThing.
+    It is good practice to provide type declarations as a form of documentation.
+    The inferred type of doThing was:
+                                
+      String -> String -> String
+                                
+
+  in value declaration doThing
+				</code></pre>
+        </section>
+          <section style="text-align: left;">
+            <h2>Type holes: Ask the compiler</h2>
+        <h3>Code:</h3>
+				<pre><code class="hljs" data-trim>
+sumOfList :: Int
+sumOfList = ?sumThemThings [1, 2, 3, 4]
+				</code></pre>
+        <h3>Compiler:</h3>
+				<pre><code class="hljs stretch" data-trim>
+Error found:
+in module Main
+at src/Main.purs line 893, column 13 - line 893, column 27
+
+  Hole 'sumThemThings' has the inferred type
+                    
+    Array Int -> Int
+                    
+  You could substitute the hole with one of these values:
+                                                                                     
+Data.Array.length           :: forall a. Array a -> Int
+Data.Foldable.length        :: forall a b f. Foldable f => Semiring b => f a -> b
+Data.Foldable.product       :: forall a f. Foldable f => Semiring a => f a -> a
+Data.Foldable.sum           :: forall a f. Foldable f => Semiring a => f a -> a
+Data.Semiring.one           :: forall a. Semiring a => a
+Data.Semiring.zero          :: forall a. Semiring a => a
+Unsafe.Coerce.unsafeCoerce  :: forall a b. a -> b
+                                                                                     
+
+in value declaration sumOfList
+				</code></pre>
+        </section>
+          <section style="text-align: left;">
+            <h2>Type search: Ask Pursuit</h2>
+        <img style="border: none;" src="img/pursuit_search.png" />
+        <img style="border: none;" src="img/pursuit_results.png" />
+        </section>
         </section>
         <section>
           <h3>Exercise #1: Types, Functions, and Hacker News</h3>
