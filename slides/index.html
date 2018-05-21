@@ -671,145 +671,82 @@ const FancyComponent = PS.FancyComponent.toReact(state)()
         </section>
 				<section>
           <section>
-            <h3>A word on <span class="yellow">type classes</span></h4>
+            <h3>Type classes (in brief)</h3>
           </section>
           <section>
-            <h3>What is a type class?</h4>
-            <p>Basically: like a Java interface</p>
-            <p>Tells what functions can be called on something</p>
-            <p>Then you can define functions that work with any value that has an instance for a type class</p>
-            <p>"What things can I do with this value"</p>
-				<pre><code class="hljs" data-trim>
-				</code></pre>
+            <h3>What is a <span class="yellow">type class</span>?</h4>
+            <p>Sort of like a Java interface</p>
+            <p>A type can have an <span class="yellow">instance</span> for the type class (~implement the interface) and you can define functions that work generically with any value that has an instance for a type class.</p>
           </section>
           <section>
-            <h3>Common type classes: Show</h4>
+            <h3>Example type class: Show</h4>
             <p>Things that can be printed to a string</p>
-            <p>E.g. Booleans, Ints</p>
-				<pre><code class="hljs" data-trim>
+				<pre><code class="hljs stretch" data-trim>
+-- Examples (in REPL)
+> show 1
+"1"
+> show false
+"false"
+> show [1,2]
+"[1,2]"
+				</code></pre>
+
+				<pre><code class="hljs stretch" data-trim>
+-- Type class definition
 class Show a where
   show :: a -> String
 
--- E.g. Booleans can be printed to a string
+-- Type class instance for Boolean
 instance showBoolean :: Show Boolean where
   show true = "true"
   show false = "false"
 
 -- So you can define functions like this:
 --type class constraint vvvvvv
-formatMsg :: forall a. (Show a) => a -> String
+formatMsg :: forall a. Show a => a -> String
 formatMsg val = "search-service: " <> show val
 				</code></pre>
           </section>
           <section>
-            <h3>Common type classes: Eq</h4>
+            <h3>Example type class: Eq</h4>
             <p>Things that can be tested for equality</p>
             <p>E.g. Ints, Strings</p>
 				<pre><code class="hljs" data-trim>
+-- Examples (in REPL)
+> "foo" == "bar"
+false
+> 1 + 2 == 3
+true
+
+-- Type class definition
 class Eq a where
   eq :: a -> a -> Boolean
 
+-- Type class instance for Int
 instance eqInt :: Eq Int where
   eq = refEq
 
+-- Type class instance for String
 instance eqString :: Eq String where
   eq = refEq
-
-> "foo" == "bar"
-false
-
--- Floating points are hard
-> 0.1 + 0.2 == 0.3
-false
-
 				</code></pre>
           </section>
           <section>
-            <h3>Common type classes: Ord</h4>
-            <p>Things that can be sorted</p>
-            <p>E.g. strings, numbers</p>
-				<pre><code class="hljs" data-trim>
-data Ordering = LT | EQ | GT
-
-class Eq a <= Ord a where
-  compare :: a -> a -> Ordering
-
-instance ordString :: Ord String where
-  compare = unsafeCompare
-
-instance ordNumber :: Ord Number where
-  compare = unsafeCompare
-
-> 2 > 3
-false
-> 2 `compare` 3
-LT
-> "b" > "a"
-true
-> "b" `compare` "a"
-GT
-				</code></pre>
+            <h3 class="blue">Why do we care about type classes?</h3>
+            <h3 class="fragment">Finnish has ~15 grammatical cases.</h3>
+            <h3 class="fragment">This is a lot for a Finnish learner</h3>
+            <h3 class="fragment">But with 15 cases you can do <i class="yellow">everything</i></h3>
           </section>
           <section>
-            <h3>Common type classes: Semigroups</h4>
-            <p>Things that can be appended together</p>
-            <p>E.g. strings, arrays</p>
-				<pre><code class="hljs" data-trim>
-class Semigroup a where
-  append :: a -> a -> a
-
-infixr 5 append as <>
-
-instance semigroupString :: Semigroup String where
-  append = concatString
-
-instance semigroupArray :: Semigroup (Array a) where
-append = concatArray
-
-> "Hello " <> "World"
-"Hello World"
-
-> [1,2] <> [3,4]
-[1,2,3,4]
-				</code></pre>
+            <h3 class="blue">Why do we care about type classes?</h3>
+            <h3 class="fragment">PureScript has ~15 main type classes.</h3>
+            <h3 class="fragment">This is a lot for a PureScript beginner</h3>
+            <h3 class="fragment">But with 15 type classes you can do <i class="yellow">everything</i></h3>
           </section>
           <section>
-            <h3>Common type classes: Functor</h4>
-            <p>Things that can be mapped over</p>
-            <p>E.g. arrays, optional values</p>
-				<pre><code class="hljs" data-trim>
-class Functor f where
-  map :: forall a b. (a -> b) -> f a -> f b
-
-> map ((+) 1) [1,2,3]
-[2,3,4]
-
-> map ((+) 1) (Just 2)
-(Just 3)
-
-> map ((+) 1) Nothing
-Nothing
-
-> map ((+) 1) (Right 2 :: Either String Int)
-(Right 3)
-
-> map ((+) 1) (Left "error" :: Either String Int)
-(Left "error")
-				</code></pre>
-          </section>
-          <section>
-            <h3>Common type classes: Encode and Decode</h4>
-            <p>Things that can be encoded to/decoded from JSON</p>
-				<pre><code class="hljs" data-trim>
--- Take a value, encode to JSON
-class Encode a where
-  encode :: a -> Foreign
-
--- Decode JSON, get a value or errors
-class Decode a where
-  decode :: Foreign -> Except MultipleErrors a
-
-				</code></pre>
+            <h3>Type classes are core to PureScript</h3>
+            <h3 class="fragment">Type classes let you delete most of your code</h3>
+            <h3 class="fragment">You already know many of those 15 type classes</h3>
           </section>
           <section>
             <h3>Type classes are core to PureScript</h4>
