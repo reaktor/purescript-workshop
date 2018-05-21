@@ -9,7 +9,7 @@ No prior PureScript knowledge is required. Familiarity with JavaScript, JavaScri
 
 ## Outline
 
-This workshop has a series of exercises building up to creating a Hacker News Reader app in the final exercises. The first four exercises are a sequence of TDD-style exercises designed to illustrate various aspects of the PureScript language and ecosystem. The fifth exercise builds on a small web application built using the Pux UI library.
+This workshop has a series of exercises building up to creating a Hacker News Reader app. The first four exercises are a sequence of TDD-style exercises designed to illustrate various aspects of the PureScript language and ecosystem. The fifth exercise builds on a small web application built using the Pux UI library.
 
 Each exercise is preceded by a short presentation of related PureScript language concepts and the project setup and is followed by a presentation of the solution. Solutions for all exercises are contained in the [solutions](./solutions) directory.
 
