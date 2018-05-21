@@ -55,7 +55,7 @@
             <li class="fragment"><span class="blue">Talk:</span> PureScript concepts, exercise intro</li>
             <li class="fragment"><span class="yellow">Code:</span> Exercise</li>
             <li class="fragment"><span class="blue">Talk:</span> Exercise recap</li>
-            <li class="fragment">Go to 2. Repeat until done or out of time.</li>
+            <li class="fragment">Call 2 (recursively). Repeat until done or out of time.</li>
             <li class="fragment">Wrap-up and feedback</li>
             </ol>
           </div>
@@ -584,8 +584,8 @@ data UserId = UserId Int
             <li class="fragment"><a href="https://blog.ndk.io/purescript-ffi.html">Wrapping JavaScript safely requires some thought</a></li>
           </ul>
         </section>
-				<section data-background="#dddddd">
-          <h3 style="color: black;">Example: calling JavaScript from PureScript</h3>
+				<section>
+          <h3>Example: calling JavaScript from PureScript</h3>
           <pre><code class="hljs language-haskell" data-trim>
           -- Main.purs (PureScript)
           foreign import pow :: Number -> Number -> Number
@@ -599,8 +599,8 @@ data UserId = UserId Int
           }
 				  </code></pre>
         </section>
-				<section data-background="#dddddd">
-          <h3 style="color: black;">Example: using JS YAML parser from PureScript</h3>
+				<section>
+          <h3>Example: using JS YAML parser from PureScript</h3>
           <pre><code class="hljs language-bash" data-trim>
           # Install JS dependency
           npm install --save js-yaml
@@ -630,8 +630,8 @@ exports.safeLoadImpl = function(str){
 }
 				  </code></pre>
         </section>
-				<section data-background="#dddddd">
-          <h3 style="color: black;">Example: calling PureScript from JavaScript</h3>
+				<section>
+          <h3>Example: calling PureScript from JavaScript</h3>
           <pre><code class="hljs" data-trim>
 -- PureScript
 module FancyComponent where
@@ -733,13 +733,13 @@ instance eqString :: Eq String where
           </section>
           <section>
             <h3 class="blue">Why do we care about type classes?</h3>
-            <h3 class="fragment">Finnish has ~15 grammatical cases.</h3>
+            <h3 class="fragment">Finnish has ~15 grammatical cases</h3>
             <h3 class="fragment">This is a lot for a Finnish learner</h3>
             <h3 class="fragment">But with 15 cases you can do <i class="yellow">everything</i></h3>
           </section>
           <section>
             <h3 class="blue">Why do we care about type classes?</h3>
-            <h3 class="fragment">PureScript has ~15 main type classes.</h3>
+            <h3 class="fragment">PureScript has ~15 main type classes</h3>
             <h3 class="fragment">This is a lot for a PureScript beginner</h3>
             <h3 class="fragment">But with 15 type classes you can do <i class="yellow">everything</i></h3>
           </section>
@@ -769,8 +769,8 @@ instance eqString :: Eq String where
             <h3>Monad is a type class</h4>
               <p>Type classes define ways of piping and transforming data:</p>
               <ul>
-                <li>Transform data: Functor (map or <$>)</li>
-                <li>Transform wrapped data: Apply (<*>)</li>
+                <li>Transform wrapped data: Functor (map or <$>)</li>
+                <li>Transform wrapped data with wrapped fns: Apply (<*>)</li>
                 <li>Wrap up data: Applicative (pure)</li>
                 <li>Sequence data transformations: Bind (>>=)</li>
                 <li>All of the above: Monad</li>
@@ -785,6 +785,29 @@ instance eqString :: Eq String where
         </section>
         <section>
           <h3>Exercise #5: Pux web application</h3>
+        </section>
+        <section>
+          <h3>PureScript in production</h3>
+          <ul>
+            <li><span class="blue">Intelligent network security</span> (20k LOC, Awake Security)</li>
+            <li><span class="blue">Visual analytics for NoSQL data</span> (Slamdata)</li>
+            <li><span class="blue">Conference session proposals</span> (13k+ LOC, WeReview)</li>
+            <li><span class="blue">Positioning systems</span> (3.7k LOC, BE, Swift Navigation)</li>
+            <li><span class="blue">Product packaging and supply chain</span> (FE/small BE, Lumi)</li>
+            <li><span class="blue">Secure location services on Ethereum</span> (all FE, FOAM)</li>
+            <li><span class="blue">Sales and social media buying</span> (FE, CitizenNet)</li>
+            <li><span class="blue">Digital payments</span> (all FE/BE, Android/iOS/web, JusPay)</li>
+            <li><span class="blue">WHO Violence Information knowledge platform</span> (WHO)</li>
+            <li><span class="blue">My talk tomorrow</span> (~900 LOC, on top of RevealJS)</li>
+          </ul>
+        </section>
+        <section>
+          <h3>Where to go from here</h3>
+          <ul>
+            <li>Try to finish each exercise.</li>
+            <li><a href="https://leanpub.com/purescript/read">Book: PureScript by Example (available online)</li>
+            <li><a href="https://egghead.io/courses/functional-programming-concepts-in-purescript">Egghead.io: Functional programming concepts in PureScript</a></li>
+          <ul>
         </section>
 			</div>
 		</div>
