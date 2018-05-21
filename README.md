@@ -75,7 +75,7 @@ npm start
 
 You should see the PureScript compiler run and then the results of a failing test.
 
-Now head over to the [Exercise1 README](./exercises/Exercise1.md) to get started on the first exercise.
+Now head over to the [Exercise1 README](./exercise1/README.md) to get started on the first exercise.
 
 ## Helpful Resources
 
