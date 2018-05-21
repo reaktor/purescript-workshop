@@ -7,7 +7,6 @@ import Control.Monad.Eff (Eff)
 import Data.Either (Either(Left, Right))
 import Data.Foreign (MultipleErrors, fail)
 import Data.Maybe (Maybe(..))
-import Network.HTTP.Affjax as Affjax
 import Simple.JSON as SimpleJson
 import Test.Unit (TestSuite, suite, suiteSkip, test, testSkip)
 import Test.Unit.Assert as Assert

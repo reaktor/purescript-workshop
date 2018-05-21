@@ -6,14 +6,11 @@ import Control.Monad.Eff (Eff)
 import Data.Array as Array
 import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
-import Data.Record (class EqualFields)
 import Data.Record as Record
-import Simple.JSON as SimpleJSON
 import Test.Unit (Test, TestSuite, failure, success, suite, suiteSkip, test, testSkip)
 import Test.Unit.Assert as Assert
 import Test.Unit.Main (run, runTestWith)
 import Test.Unit.Output.TAP (runTest)
-import Type.Row (class RowToList)
 
 main :: Eff _ Unit
 main = run (runTestWith runTest tests)

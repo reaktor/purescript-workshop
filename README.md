@@ -15,11 +15,11 @@ Each exercise is preceded by a short presentation of related PureScript language
 
 1. Introduction
 1. Exercises
-    1. [Exercise #1: Types, functions, and Hacker News](./Exercise1.md)
-    1. [Exercise #2: ADTs, sorting, and filtering](./Exercise2.md)
-    1. [Exercise #3: Time and the Foreign Function Interface (FFI)](./Exercise3.md)
-    1. [Exercise #4: The network is calling for monads](./Exercise4.md)
-    1. [Exercise #5: Pux web application](./Exercise5.md)
+    1. [Exercise #1: Types, functions, and Hacker News](./exercise1/README.md)
+    1. [Exercise #2: ADTs, sorting, and filtering](./exercise2/README.md)
+    1. [Exercise #3: Time and the Foreign Function Interface (FFI)](./exercise3/README.md)
+    1. [Exercise #4: The network is calling for monads](./exercise4/README.md)
+    1. [Exercise #5: Pux web application](./exercise5/README.md)
 1. Conclusion & discussion
 
 The presentation slides can be viewed [here](https://reaktor.github.io/purescript-workshop-breakpoint). The source code for the slides is [in the slides directory](./slides). Solutions for all exercises are contained in the [solutions](./solutions) directory.
@@ -28,11 +28,11 @@ The presentation slides can be viewed [here](https://reaktor.github.io/purescrip
 
 ### Clone this repository
 
-Clone the repository and cd into the `exercises` directory:
+Clone this repository and cd into the first exercise directory (`exercise1/`):
 
 ```
 git clone https://github.com/reaktor/purescript-workshop-breakpoint
-cd purescript-workshop-breakpoint/exercises
+cd purescript-workshop-breakpoint/exercise1
 ```
 
 ### Install dependencies
@@ -59,17 +59,18 @@ For the Atom editor, you can set it up as follows:
 - In Edit -> Preferences -> Packages -> ide-purescript -> Settings:
   - Make sure the option "Use npm bin directory" is checked.
   - Make sure the option "Add psc-package sources" is checked.
-- Select File -> Add Project Folder and select the `exercises` directory of this git repo.
-- Open exercises/test/Exercise1.purs, add a syntax error, and verify that the syntax error is underlined in red in your editor. If it is not, the IDE server may not have been started. Restarting Atom may help.
+- Select File -> Add Project Folder and select the directory cloned from this repository.
+- Open exercise1/test/Exercise1.purs, add a syntax error, and verify that the syntax error is underlined in red in your editor. If it is not, the IDE server may not have been started. Restarting Atom may help.
 
 There is also support for Vim, Emacs, and other editors. [See the instructions here](https://github.com/purescript/documentation/blob/master/ecosystem/Editor-and-tool-support.md), but you are on your own for the other editors.
 
 ### Start the exercises
 
-Verify your setup is working by running the command for the first exercise (from the `exercises` directory):
+Verify your setup is working by running the build command for the first exercise:
 
 ```
-npm run exercise1
+cd exercise1
+npm start
 ```
 
 You should see the PureScript compiler run and then the results of a failing test.
