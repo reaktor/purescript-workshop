@@ -11,7 +11,7 @@ No prior PureScript knowledge is required. Familiarity with JavaScript, JavaScri
 
 This workshop has a series of exercises building up to creating a Hacker News Reader app. The first four exercises are a sequence of TDD-style exercises designed to illustrate various aspects of the PureScript language and ecosystem. The fifth exercise builds on a small web application built using the Pux UI library.
 
-Each exercise is preceded by a short presentation of related PureScript language concepts and the project setup and is followed by a presentation of the solution. Solutions for all exercises are contained in the [solutions](./solutions) directory.
+Each exercise is preceded by a short presentation of related PureScript language concepts and the project setup and is followed by a presentation of the solution.
 
 1. Introduction
 1. Exercises
@@ -22,7 +22,7 @@ Each exercise is preceded by a short presentation of related PureScript language
     1. Exercise #5: Pux web application
 1. Conclusion & discussion
 
-The presentation slides can be viewed [here](https://reaktor.github.io/purescript-workshop-breakpoint). The source code for the slides is [in the slides directory](./slides).
+The presentation slides can be viewed [here](https://reaktor.github.io/purescript-workshop-breakpoint). The source code for the slides is [in the slides directory](./slides). Solutions for all exercises are contained in the [solutions](./solutions) directory.
 
 ## Getting started
 
