@@ -15,11 +15,11 @@ Each exercise is preceded by a short presentation of related PureScript language
 
 1. Introduction
 1. Exercises
-    1. Exercise #1: Types, functions, and Hacker News
-    1. Exercise #2: ADTs, sorting, and filtering
-    1. Exercise #3: Time and the Foreign Function Interface (FFI)
-    1. Exercise #4: The network is calling for monads
-    1. Exercise #5: Pux web application
+    1. [Exercise #1: Types, functions, and Hacker News](./Exercise1.md)
+    1. [Exercise #2: ADTs, sorting, and filtering](./Exercise2.md)
+    1. [Exercise #3: Time and the Foreign Function Interface (FFI)](./Exercise3.md)
+    1. [Exercise #4: The network is calling for monads](./Exercise4.md)
+    1. [Exercise #5: Pux web application](./Exercise5.md)
 1. Conclusion & discussion
 
 The presentation slides can be viewed [here](https://reaktor.github.io/purescript-workshop-breakpoint). The source code for the slides is [in the slides directory](./slides). Solutions for all exercises are contained in the [solutions](./solutions) directory.
@@ -44,12 +44,11 @@ nvm install
 
 Install Node and psc-package dependencies, including PureScript itself and PureScript build tools:
 
-
 ```
 npm install
 ```
 
-## Set up your editor
+### Set up your editor
 
 Editor support is not strictly necessary but is quite useful for tools like syntax highlighting, in-line compiler errors, and automatic imports.
 
@@ -65,7 +64,7 @@ For the Atom editor, you can set it up as follows:
 
 There is also support for Vim, Emacs, and other editors. [See the instructions here](https://github.com/purescript/documentation/blob/master/ecosystem/Editor-and-tool-support.md), but you are on your own for the other editors.
 
-## Getting started
+### Start the exercises
 
 Verify your setup is working by running the command for the first exercise (from the `exercises` directory):
 
