@@ -14,9 +14,9 @@ main = run (runTestWith runTest tests)
 tests :: TestSuite _
 tests = do
   suite "Ex 3 (FFI)" do
-    test "1 Format date using MomentJS" do
+    test "1 Format a date using MomentJS" do
       Assert.equal "June 1st 2018, 7:37:15 am" (formatDate "2018-06-01 07:37:15")
-    test "1 Add two numbers using JavaScript" do
+    test "2 Add two numbers using JavaScript" do
       Assert.equal 17 (addNumbers 12 5)
 
 foreign import momentFormatDate :: String -> String

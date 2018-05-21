@@ -6,6 +6,8 @@ import Control.Monad.Aff (Aff)
 import Control.Monad.Eff (Eff)
 import Data.Either (Either(Left, Right))
 import Data.Foreign (MultipleErrors)
+import Data.List (List(..), (:))
+import Data.Maybe (Maybe(..))
 import Network.HTTP.Affjax as Affjax
 import Simple.JSON as SimpleJSON
 import Simple.JSON as SimpleJson
@@ -13,6 +15,193 @@ import Test.Unit (TestSuite, suite, suiteSkip, test)
 import Test.Unit.Assert as Assert
 import Test.Unit.Main (run, runTestWith)
 import Test.Unit.Output.TAP (runTest)
+
+main :: Eff _ Unit
+main = run (runTestWith runTest tests)
+
+tests :: TestSuite _
+tests = do
+  suite "Ex 4 (network)" do
+    -- Big idea: what you can do with type classes
+
+    -- Hint: use "append" or <>
+    test "append: appending strings" do
+      Assert.equal
+        "Hey there, Matti Meikäläinen!"
+        (sayHi { firstName: "Matti", lastName: "Meikäläinen" })
+
+    test "append: appending arrays" do
+      Assert.equal
+        [2, 5, 7, 3, 6, 8]
+        (mergeUserIds [2, 5, 7] [3, 6, 8])
+
+    test "append: appending optional results" do
+      Assert.equal
+        (Just [1, 2, 3, 4, 5])
+        (mergeOptionalResults (Just [1, 2]) Nothing (Just [3, 4, 5]))
+    
+    -- Hint: use "map" or <$>
+    test "map: array" do
+      -- If it has values, add ten to them.
+      -- If it doesn't have values, do nothing.
+      Assert.equal
+        [15, 25, 35]
+        (addTenToArrayValues [5, 15, 25])
+        
+    test "map: array (empty)" do
+      Assert.equal
+        []
+        (addTenToArrayValues [])
+        
+    test "map: list" do
+      -- If it has values, add ten to them.
+      -- If it doesn't have values, do nothing.
+      Assert.equal
+        (15 : 25 : 35 : Nil)
+        (addTenToListValues (5 : 15 : 25 : Nil))
+        
+    test "map: list (empty)" do
+      -- If it has values, add ten to them.
+      -- If it doesn't have values, do nothing.
+      Assert.equal
+        Nil
+        (addTenToListValues Nil)
+        
+    test "map: maybe" do
+      -- If it contains a value, add ten to it.
+      -- If it doesn't contain a value, do nothing.
+      Assert.equal
+        (Just 110)
+        (addTenToMaybeValue (Just 100))
+        
+    test "map: maybe (nothing)" do
+      Assert.equal
+        Nothing
+        (addTenToMaybeValue Nothing)
+        
+    -- If it contains a value and not an error, add ten to it.
+    -- If it contains an error, do nothing.
+    test "map: either (value)" do
+      Assert.equal
+        (Right 110)
+        (addTenToEitherValue (Right 100))
+    test "map: either (error)" do
+      Assert.equal
+        (Left "error")
+        (addTenToEitherValue (Left "error"))
+
+    -- If the asynchronous network response (like a promise) returned a value,
+    -- add ten to it.
+    -- If no value was returned, do nothing
+    test "map: Aff" do
+      result <- addTenToNetworkResponse validNetworkResponse
+      Assert.equal 110 result
+      
+    test "map: add ten to any value you can map over" do
+      Assert.equal [15, 25, 35] (addTen [5, 15, 25])
+      Assert.equal [] (addTen [])
+      Assert.equal (15 : 25 : 35 : Nil) (addTen (5 : 15 : 25 : Nil))
+      Assert.equal Nil (addTen Nil)
+      Assert.equal (Just 110) (addTen (Just 100))
+      Assert.equal Nothing (addTen Nothing)
+      Assert.equal (Right 110) (addTen (Right 100 :: Either String Int))
+      Assert.equal (Left "error") (addTen (Left "error"))
+      result <- addTen validNetworkResponse
+      Assert.equal 110 result
+
+    -- encoding JSON
+
+    -- decoding JSON
+    -- returns an Either value
+
+    -- do notation
+    -- in parsing JSOn
+    -- in making an asynchronous network call
+    
+
+    -- This is provided as an example.
+    test "parse the URL of the first PureScript commit" do
+      Assert.equal
+        (Right "https://api.github.com/repos/purescript/purescript/commits/291a6d4ddd88c65a8a0c5368441c1b7c639ca854")
+        (parseUrl firstPureScriptCommit)
+        
+    test "parse the SHA commit hash for first PureScript commit" do
+      Assert.equal
+        (Right "291a6d4ddd88c65a8a0c5368441c1b7c639ca854")
+        (parseCommitHash firstPureScriptCommit)
+        
+    test "parse the author of the first PureScript commit" do
+      Assert.equal
+        (Right "Phil Freeman")
+        (parseAuthor firstPureScriptCommit)
+        
+    -- test "find the date of the first commit to the public PureScript repo" do
+    --   commit <- fetchGitHubCommit
+    --   Assert.equal (Right "asdf2013-09-30T05:29:23Z") (_.commit.author.date <$> commit)
+
+type User =
+  { firstName :: String
+  , lastName :: String }
+
+sayHi :: User -> String
+sayHi {firstName, lastName} = "Hey there, " <> firstName <> " " <> lastName <> "!"
+
+mergeUserIds :: Array Int -> Array Int -> Array Int
+mergeUserIds ids1 ids2 = ids1 <> ids2
+
+mergeOptionalResults :: Maybe (Array Int) -> Maybe (Array Int) -> Maybe (Array Int) -> Maybe (Array Int)
+mergeOptionalResults a b c = a <> b <> c
+
+addTenToArrayValues :: Array Int -> Array Int
+addTenToArrayValues ints = map ((+) 10) ints
+
+addTenToListValues :: List Int -> List Int
+addTenToListValues ints = map ((+) 10) ints
+
+addTenToMaybeValue :: Maybe Int -> Maybe Int
+addTenToMaybeValue int = map ((+) 10) int
+
+addTenToEitherValue :: Either String Int -> Either String Int
+addTenToEitherValue result = map ((+) 10) result
+
+validNetworkResponse :: Aff _ Int
+validNetworkResponse = pure 100
+
+addTenToNetworkResponse :: Aff _ Int -> Aff _ Int
+addTenToNetworkResponse response = map ((+) 10) response
+
+addTen :: forall f. Functor f => f Int -> f Int
+addTen f = map ((+) 10) f
+
+parseUrl :: String -> Either MultipleErrors String
+parseUrl commitStr = do
+  (parsed :: { url :: String }) <- SimpleJSON.readJSON commitStr
+  pure parsed.url
+
+parseCommitHash :: String -> Either MultipleErrors String
+parseCommitHash commitStr = do
+  (parsed :: { sha :: String }) <- SimpleJSON.readJSON commitStr
+  pure parsed.sha
+      
+parseAuthor :: String -> Either MultipleErrors String
+parseAuthor commitStr = do
+  (parsed :: { commit :: { author :: { name :: String } } }) <- SimpleJSON.readJSON commitStr
+  pure parsed.commit.author.name
+
+gitHubApiUrl :: String
+gitHubApiUrl = "https://api.github.com/repos/purescript/purescript/commits/291a6d4ddd88c65a8a0c5368441c1b7c639ca854"
+
+type GitHubCommit = {
+  commit :: {
+    author :: { date :: String }
+  }
+} 
+
+fetchGitHubCommit :: Aff _ (Either MultipleErrors GitHubCommit)
+fetchGitHubCommit = do
+  result <- Affjax.get gitHubApiUrl
+  pure (SimpleJson.readJSON result.response)
+
 
 firstPureScriptCommit :: String
 firstPureScriptCommit = """
@@ -130,45 +319,3 @@ firstPureScriptCommit = """
   ]
 }
 """
-
-main :: Eff _ Unit
-main = run (runTestWith runTest tests)
-
-tests :: TestSuite _
-tests = do
-  suite "Ex 4 (network)" do
-    test "parse the author of the first PureScript commit" do
-      Assert.equal
-        (Right "Phil Freeman")
-        (parseAuthor firstPureScriptCommit)
-    test "parse the SHA commit hash for first PureScript commit" do
-      Assert.equal
-        (Right "291a6d4ddd88c65a8a0c5368441c1b7c639ca854")
-        (parseCommitHash firstPureScriptCommit)
-    test "find the date of the first commit to the public PureScript repo" do
-      commit <- fetchGitHubCommit
-      Assert.equal (Right "asdf2013-09-30T05:29:23Z") (_.commit.author.date <$> commit)
-      
-parseAuthor :: String -> Either MultipleErrors String
-parseAuthor commitStr = do
-  (parsed :: { commit :: { author :: { name :: String } } }) <- SimpleJSON.readJSON commitStr
-  pure parsed.commit.author.name
-
-parseCommitHash :: String -> Either MultipleErrors String
-parseCommitHash commitStr = do
-  (parsed :: { url :: String }) <- SimpleJSON.readJSON commitStr
-  pure parsed.url
-
-gitHubApiUrl :: String
-gitHubApiUrl = "https://api.github.com/repos/purescript/purescript/commits/291a6d4ddd88c65a8a0c5368441c1b7c639ca854"
-
-type GitHubCommit = {
-  commit :: {
-    author :: { date :: String }
-  }
-} 
-
-fetchGitHubCommit :: Aff _ (Either MultipleErrors GitHubCommit)
-fetchGitHubCommit = do
-  result <- Affjax.get gitHubApiUrl
-  pure (SimpleJson.readJSON result.response)
