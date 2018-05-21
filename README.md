@@ -5,7 +5,7 @@ This is a workshop introduction to the PureScript language.
 The goal of this workshop is to get attendees started with practical web app development using PureScript. The focus is on application of PureScript concepts over theoretical understanding.
 
 ## Pre-requisites
-No prior PureScript knowledge is required. Some familiarity with JavaScript (or at least JavaScript tooling) or functional programming is helpful.
+No prior PureScript knowledge is required. Familiarity with JavaScript, JavaScript tooling, and functional programming is helpful.
 
 ## Outline
 
@@ -24,54 +24,58 @@ Each exercise is preceded by a short presentation of related PureScript language
 
 The presentation slides can be viewed [here](https://reaktor.github.io/purescript-workshop-breakpoint). The source code for the slides is [in the slides directory](./slides).
 
-## Editor setup
-
-Editor support is not necessary but is quite useful for tools like syntax highlighting, in-line compiler errors, and automatic imports.
-
-For the Atom editor, you can set it up as follows:
-
-- [Download and install Atom](https://atom.io/)
-- Install the packages ide-purescript and language-purescript (under Edit -> Preferences -> Install)
-- In Edit -> Preferences -> Packages -> ide-purescript -> Settings, tick the box for "Use npm bin directory".
-- Select File -> Add Project Folder and select the directory of this git repo.
-- Open src/Main.purs, add a syntax error, and verify that the IDE server has started and the syntax error is reported inline.
-
-There is also support for Vim, Emacs, and other editors. [See the instructions here](https://github.com/purescript/documentation/blob/master/ecosystem/Editor-and-tool-support.md), but you are on your own for the other editors.
-
 ## Getting started
 
-Run all of the following commands from the `exercises` directory.
+### Clone this repository
 
-Install the npm/Node version listed in .nvmrc. If you are using nvm, you can install it with
+Clone the repository and cd into the `exercises` directory:
+
+```
+git clone https://github.com/reaktor/purescript-workshop-breakpoint
+cd purescript-workshop-breakpoint/exercises
+```
+
+### Install dependencies
+
+Install the npm/Node version listed in .nvmrc. Newer versions of Node will also probably work. If you are using nvm, you can install it with
 ```
 nvm install
 ```
 
 Install Node and psc-package dependencies, including PureScript itself and PureScript build tools:
+
+
 ```
 npm install
 ```
 
-## Exercises 1-4
+## Set up your editor
 
-Run the following command from the `exercises` directory to compile the first exercises and run tests. This will re-compile the code and re-run tests whenever the code changes.
+Editor support is not strictly necessary but is quite useful for tools like syntax highlighting, in-line compiler errors, and automatic imports.
+
+For the Atom editor, you can set it up as follows:
+
+- [Download and install Atom](https://atom.io/)
+- Install the packages ide-purescript and language-purescript (under Edit -> Preferences -> Install)
+- In Edit -> Preferences -> Packages -> ide-purescript -> Settings:
+  - Make sure the option "Use npm bin directory" is checked.
+  - Make sure the option "Add psc-package sources" is checked.
+- Select File -> Add Project Folder and select the `exercises` directory of this git repo.
+- Open exercises/test/Exercise1.purs, add a syntax error, and verify that the syntax error is underlined in red in your editor. If it is not, the IDE server may not have been started. Restarting Atom may help.
+
+There is also support for Vim, Emacs, and other editors. [See the instructions here](https://github.com/purescript/documentation/blob/master/ecosystem/Editor-and-tool-support.md), but you are on your own for the other editors.
+
+## Getting started
+
+Verify your setup is working by running the command for the first exercise (from the `exercises` directory):
+
 ```
-npm run exercises:all
+npm run exercise1
 ```
 
-This should compile successfully and display one failing test in [exercises/test/Exercise1.purs](exercises/test/Exercise1.purs). Open that file in your editor and write code to make that test pass. There are other tests or test suites within the same file prefixed by `skip`, as in `skipTest` and `skipSuite`. Remove the `skip` portion from the next test to proceed. Now make that test pass.
+You should see the PureScript compiler run and then the results of a failing test.
 
-The first four exercises correspond to four test files in the `exercises/test/` directory.
-
-## Exercise 5: Pux web application
-
-In the final exercise, we add features to a front end Pux web application. The application source code is in the [exercises/src/] directory and can be compiled and bundled by running
-
-```
-npm run exercise5
-```
-
-The web application can be viewed by opening the file [exercises/public/index.html](exercises/public/index.html) in your browser. The source code will be recompiled and re-bundled on changes, and changes can be viewed in the browser by refreshing the page. The specific tasks themselves are described in the [slides](https://reaktor.github.io/purescript-workshop-breakpoint).
+Now head over to the [Exercise1 README](./exercises/Exercise1.md) to get started on the first exercise.
 
 ## Helpful Resources
 
