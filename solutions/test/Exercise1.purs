@@ -12,6 +12,53 @@ import Test.Unit.Assert as Assert
 import Test.Unit.Main (run, runTestWith)
 import Test.Unit.Output.TAP (runTest)
 
+main :: Eff _ Unit
+main = run (runTestWith runTest tests)
+
+tests :: TestSuite _
+tests =
+  suite "Ex 1 (types and fns)" $ do
+    test "1 Record: get field" do
+      Assert.equal
+        "123 Barry St"
+        (getStreet { street: "123 Barry St", city: "P-town" })
+
+    test "2 Record: update field" do
+      assertRecordEqual
+        { street: "127 Barry St", city: "P-town" }
+        (updateStreet "127 Barry St" { street: "123 Barry St", city: "P-town" })
+
+    test "3 Record: print fields to string" do
+      Assert.equal
+        "123 Barry St, P-town"
+        (showAddress { street: "123 Barry St", city: "P-town" })
+
+    test "4 Functions: sum numbers" do
+      Assert.equal
+        203
+        (sumNumbers [3, 7, 5, 12, 176])
+
+    test "5 List the authors of the sample Hacker News stories" do
+      Assert.equal
+        ["bpierre", "pka", "sharkdp", "paf31", "dstronczak", "purescript"]
+        (listAuthors hackerNewsStories)
+
+    test "6 List the IDs of stories with more than 100 points" do
+      Assert.equal
+        ["8351981", "13551404", "9644324"]
+        (listHighPointStoryIds hackerNewsStories)
+
+    test "7 Find the stories shared by author \"paf31\"" do
+      assertRecordArrayEqual
+        [{created_at: "2013-11-01T03:09:13.000Z",
+            title: "PureScript",
+            url: "http://github.com/paf31/purescript",
+            author: "paf31",
+            points: 59,
+            num_comments: 17,
+            objectID: "6651572"}]
+        (philStories hackerNewsStories)
+
 type Story = 
   { author :: String
   , created_at :: String
@@ -78,53 +125,6 @@ hackerNewsStories = [
     objectID: "9335761"
   }
 ]
-
-main :: Eff _ Unit
-main = run (runTestWith runTest tests)
-
-tests :: TestSuite _
-tests =
-  suite "Ex 1 (types)" $ do
-    test "1 Record: get field" do
-      Assert.equal
-        "123 Barry St"
-        (getStreet { street: "123 Barry St", city: "P-town" })
-
-    test "2 Record: update field" do
-      assertRecordEqual
-        { street: "127 Barry St", city: "P-town" }
-        (updateStreet "127 Barry St" { street: "123 Barry St", city: "P-town" })
-
-    test "3 Record: print fields to string" do
-      Assert.equal
-        "123 Barry St, P-town"
-        (showAddress { street: "123 Barry St", city: "P-town" })
-
-    test "4 Functions: sum numbers" do
-      Assert.equal
-        203
-        (sumNumbers [3, 7, 5, 12, 176])
-
-    test "5 List the authors of the sample Hacker News stories" do
-      Assert.equal
-        ["bpierre", "pka", "sharkdp", "paf31", "dstronczak", "purescript"]
-        (listAuthors hackerNewsStories)
-
-    test "6 List the IDs of stories with more than 100 points" do
-      Assert.equal
-        ["8351981", "13551404", "9644324"]
-        (listHighPointStoryIds hackerNewsStories)
-
-    test "7 Find the stories shared by author \"paf31\"" do
-      assertRecordArrayEqual
-        [{created_at: "2013-11-01T03:09:13.000Z",
-            title: "PureScript",
-            url: "http://github.com/paf31/purescript",
-            author: "paf31",
-            points: 59,
-            num_comments: 17,
-            objectID: "6651572"}]
-        (philStories hackerNewsStories)
       
 type Address = { street :: String, city :: String }
 
