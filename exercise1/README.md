@@ -21,3 +21,9 @@ This should compile successfully and display one failing test in [test/Exercise1
 There are other tests or test suites within the same file prefixed by `skip`, as in `skipTest` and `skipSuite`. Once the first test has been passed, remove the `skip` portion from the next test, watch the test fail, and then write the code to make that pass, too. Repeat until you run out of tests.
 
 When you are ready, you can move on to [Exercise 2](../exercise2/README.md).
+
+### References
+
+* [Book: PureScript by Example (available online)](https://leanpub.com/purescript/read)
+* [PureScript Language Reference](https://github.com/purescript/documentation/blob/master/language/README.md)
+* [Language/library docs: Pursuit](https://pursuit.purescript.org/)

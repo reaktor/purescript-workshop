@@ -60,19 +60,6 @@
             </ol>
           </div>
         </section>
-        <section data-markdown>
-	<textarea data-template>
-		### Halp! How do I...?
-
-  [Book: PureScript by Example (available online)](https://leanpub.com/purescript/read)
-
-  [PureScript Language Reference](https://github.com/purescript/documentation/blob/master/language/README.md)
-
-  [Language/library docs: Pursuit](https://pursuit.purescript.org/)
-
-  [Pux UI library docs](http://purescript-pux.org/docs/architecture/)
-	</textarea>
-        </section>
 				<section>
           <h2>What is PureScript?</h2>
           <h3 class="fragment">strongly-typed</h3>
@@ -234,27 +221,6 @@ expiredSessions = filter isExpired
 				</code></pre>
           </section>
           <section>
-            <h3>Operators are also functions</h3>
-				<pre><code class="hljs" data-trim>
--- These are all equivalent:
-sum :: Int -> Int -> Int
-sum x y = x + y
-
-sum :: Int -> Int -> Int
-sum x y = (+) x y
-
-sum :: Int -> Int -> Int
-sum x y = add x y
-
-sum :: Int -> Int -> Int
-sum x y = x `add` y
-
-sum :: Int -> Int -> Int
-sum = add
-				</code></pre>
-            <p>They all have a plain text alias e.g. + and add</p>
-          </section>
-          <section>
             <h3>Functions can take generic parameters</h3>
 				<pre><code class="hljs" data-trim>
 -- Works for any type of values in the array
@@ -269,6 +235,10 @@ map :: forall a b f. Functor f => (a -> b) -> f a -> f b
           <section>
             <h3>Anonymous functions</h3>
 				<pre><code class="hljs" data-trim>
+\user -> user.name
+
+\id -> id == "teh_id"
+
 val = Array.filter (\id -> id == "teh_id") ["an_id", "teh_id", "other_id"]
 				</code></pre>
           </section>
@@ -332,38 +302,6 @@ main = log ("User: " <> show (1 + 5))
               <li>What's a function with this type? -> "pu Array a -> Int"</li>
               </ul></small>
             </ul>
-          </section>
-          <section>
-            <h3>Prelude module</h3>
-            <p>Bower package: purescript-prelude</p>
-				<pre><code class="hljs" data-trim>
--- Most PS code starts by importing the Prelude:
-module Foo where
-
-import Prelude
-
--- ... module code
-				</code></pre>
-				<pre><code class="hljs" data-trim>
--- Prelude has useful things like:
-add :: forall a. Semiring a => a -> a -> a    -- aka +
-mul :: forall a. Semiring a => a -> a -> a    -- aka *
-eq :: forall a. Eq a => a -> a -> Boolean     -- aka ==
-notEq :: forall a. Eq a => a -> a -> Boolean  -- aka /=
-map :: forall a b. (a -> b) -> f a -> f b     -- aka <$>
-				</code></pre>
-          </section>
-          <section>
-            <h3>Example: Data.Array module</h3>
-        <p>Bower package: purescript-arrays</p>
-				<pre><code class="hljs" data-trim>
--- in module Data.Array:
-insert :: forall a. Ord a => a -> Array a -> Array a
-length :: forall a. Array a -> Int
-filter :: forall a. (a -> Boolean) -> Array a -> Array a
-union :: forall a. Eq a => Array a -> Array a -> Array a
-zip :: forall a b. Array a -> Array b -> Array (Tuple a b)
-				</code></pre>
           </section>
         </section>
         <section>
