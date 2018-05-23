@@ -22,7 +22,7 @@ Each exercise is preceded by a short presentation of related PureScript language
     1. [Exercise #5: Pux web application](./exercise5/README.md)
 1. Conclusion & discussion
 
-The presentation slides can be viewed [here](https://reaktor.github.io/purescript-workshop-breakpoint). The source code for the slides is [in the slides directory](./slides). Solutions for all exercises are contained in the [solutions](./solutions) directory.
+The presentation slides can be viewed [here](https://reaktor.github.io/purescript-workshop). The source code for the slides is [in the slides directory](./slides). Solutions for all exercises are contained in the [solutions](./solutions) directory.
 
 ## Getting started
 
@@ -31,8 +31,8 @@ The presentation slides can be viewed [here](https://reaktor.github.io/purescrip
 Clone this repository and cd into the first exercise directory (`exercise1/`):
 
 ```
-git clone https://github.com/reaktor/purescript-workshop-breakpoint
-cd purescript-workshop-breakpoint/exercise1
+git clone https://github.com/reaktor/purescript-workshop
+cd purescript-workshop/exercise1
 ```
 
 ### Install dependencies
