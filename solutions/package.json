@@ -16,6 +16,7 @@
     "exercise5": "pulp --psc-package --watch browserify --main HackerReader.Main --to public/client.js -- censor-codes=WildcardInferredType"
   },
   "dependencies": {
+    "psc-package-bin-simple": "1.0.0",
     "create-react-class": "15.6.3",
     "moment": "2.22.2",
     "pulp": "12.3.0",
