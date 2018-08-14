@@ -2,10 +2,11 @@ module HackerReader.Main where
 
 import Prelude hiding (div)
 
+import Effect (Effect)
+import Effect.Class (liftEffect)
 import CSS (marginBottom, px)
-import Control.Monad.Aff (Aff)
-import Control.Monad.Aff.Console (log)
-import Control.Monad.Eff (Eff)
+import Effect.Aff (Aff)
+import Effect.Console (log)
 import Data.Array as Array
 import Data.Either (Either(Left,Right))
 import Data.Foldable (for_)
@@ -39,19 +40,19 @@ initialState =
   { selectedSort: ByScore
   , stories: [] }
 
-foldp :: Event -> State -> { state :: State, effects :: Array (Aff _ (Maybe Event)) }
+foldp :: Event -> State -> { state :: State, effects :: Array (Aff (Maybe Event)) }
 foldp (LoadFrontPage) state = { state, effects: [loadHackerNewsStories] }
 foldp (SetStories stories) state = { state: newState, effects: [] }
   where newState = state { stories = stories }
 foldp (SetSortBy newSort) state = { state: newState, effects: [] }
   where newState = state { selectedSort = newSort }
 
-loadHackerNewsStories :: Aff _ (Maybe Event)
+loadHackerNewsStories :: Aff (Maybe Event)
 loadHackerNewsStories = do
   storiesResult <- fetchHackerNewsStories
   case storiesResult of
     Left errors -> do
-      log $ "Error decoding JSON: " <> show errors
+      liftEffect $ log $ "Error decoding JSON: " <> show errors
       pure Nothing
     Right stories -> pure $ Just (SetStories stories)
 
@@ -98,7 +99,7 @@ storyItem story =
 divider :: HTML Event
 divider = span ! style Styles.divider $ text "|"
   
-main :: Eff _ Unit
+main :: Effect Unit
 main = do
   app <- Pux.start
     { initialState

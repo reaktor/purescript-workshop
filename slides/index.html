@@ -180,7 +180,7 @@ noEnergy creep = C.amtCarrying creep resource_energy == 0
 findProduct :: ProductId -> ProductDirectory -> Maybe Product
 findProduct id directory = -- body omitted
 
-loadConfig :: FilePath -> Aff _ (Either (NonEmptyList Error) Config)
+loadConfig :: FilePath -> Aff (Either (NonEmptyList Error) Config)
 loadConfig cfgFile = do
   -- body omitted
 
@@ -544,8 +544,7 @@ data UserId = UserId Int
 -- PureScript
 module Kubernetes.Yaml where
 
-foreign import safeLoadImpl ::
-  forall e. String -> Eff (exception :: EXCEPTION | e) Foreign
+foreign import safeLoadImpl :: String -> Effect Foreign
 
 data YamlError = YamlError Error
 
@@ -570,7 +569,7 @@ exports.safeLoadImpl = function(str){
 -- PureScript
 module FancyComponent where
 
-toReact :: forall props. State -> Eff _ (ReactClass props)
+toReact :: forall props. State -> Effect (ReactClass props)
 toReact state = do
   app <- start
     { initialState: state

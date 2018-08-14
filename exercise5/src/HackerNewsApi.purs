@@ -2,12 +2,12 @@ module HackerReader.HackerNewsApi where
 
 import Prelude
 
-import Control.Monad.Aff (Aff)
+import Effect.Aff (Aff)
 import Data.Either (Either)
-import Data.Foreign (MultipleErrors)
+import Foreign (MultipleErrors)
 import Data.String as Str
-import Network.HTTP.Affjax (AJAX)
 import Network.HTTP.Affjax as Affjax
+import Network.HTTP.Affjax.Response as Response
 import Simple.JSON as SimpleJson
 
 type QueryResult = 
@@ -33,8 +33,8 @@ storiesUrl storyIds = hackerNewsApi <> "?tags=story,(" <> storyTags <> ")"
 mkStoryTag :: Int -> String
 mkStoryTag id = "story_" <> show id
 
-fetchHackerNewsStories :: forall e. Aff (ajax :: AJAX | e) (Either MultipleErrors (Array Story))
+fetchHackerNewsStories :: Aff (Either MultipleErrors (Array Story))
 fetchHackerNewsStories = do
-  result <- Affjax.get $ storiesUrl hackerNewsStoryIds
+  result <- Affjax.get Response.string $ storiesUrl hackerNewsStoryIds
   let (decoded :: Either MultipleErrors QueryResult) = SimpleJson.readJSON result.response
   pure $ map _.hits decoded

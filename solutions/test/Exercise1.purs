@@ -2,7 +2,7 @@ module Test.Exercise1 where
 
 import Prelude
 
-import Control.Monad.Eff (Eff)
+import Effect (Effect)
 import Data.Array as Array
 import Data.Foldable (all, sum)
 import Data.Tuple (Tuple(Tuple))
@@ -12,10 +12,10 @@ import Test.Unit.Assert as Assert
 import Test.Unit.Main (run, runTestWith)
 import Test.Unit.Output.TAP (runTest)
 
-main :: Eff _ Unit
+main :: Effect Unit
 main = run (runTestWith runTest tests)
 
-tests :: TestSuite _
+tests :: TestSuite
 tests =
   suite "Ex 1 (types and fns)" $ do
     test "1 Record: get field" do
