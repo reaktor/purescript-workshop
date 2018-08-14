@@ -2,16 +2,16 @@ module Test.Exercise3 where
 
 import Prelude
 
-import Control.Monad.Eff (Eff)
+import Effect (Effect)
 import Test.Unit (TestSuite, suite, suiteSkip, test, testSkip)
 import Test.Unit.Assert as Assert
 import Test.Unit.Main (run, runTestWith)
 import Test.Unit.Output.TAP (runTest)
 
-main :: Eff _ Unit
+main :: Effect Unit
 main = run (runTestWith runTest tests)
 
-tests :: TestSuite _
+tests :: TestSuite
 tests = do
   suite "Ex 3 (FFI)" do
     test "1 Format a date using MomentJS" do

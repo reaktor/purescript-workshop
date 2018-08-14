@@ -2,20 +2,20 @@ module Test.Exercise2 where
 
 import Prelude
 
-import Control.Monad.Eff (Eff)
+import Effect (Effect)
 import Data.Array as Array
 import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
-import Data.Record as Record
+import Record as Record
 import Test.Unit (Test, TestSuite, failure, success, suite, suiteSkip, test, testSkip)
 import Test.Unit.Assert as Assert
 import Test.Unit.Main (run, runTestWith)
 import Test.Unit.Output.TAP (runTest)
 
-main :: Eff _ Unit
+main :: Effect Unit
 main = run (runTestWith runTest tests)
 
-tests :: TestSuite _
+tests :: TestSuite
 tests = do
   suite "Ex 2 (ADTs)" do
     suite "1 Printing area" do

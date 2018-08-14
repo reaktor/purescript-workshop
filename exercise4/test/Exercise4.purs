@@ -2,10 +2,10 @@ module Test.Exercise4 where
 
 import Prelude
 
-import Control.Monad.Aff (Aff)
-import Control.Monad.Eff (Eff)
+import Effect (Effect)
+import Effect.Aff (Aff)
 import Data.Either (Either(Left, Right))
-import Data.Foreign (MultipleErrors, fail)
+import Foreign (MultipleErrors, fail)
 import Data.Maybe (Maybe(..))
 import Simple.JSON as SimpleJson
 import Test.Unit (TestSuite, suite, suiteSkip, test, testSkip)
@@ -13,10 +13,10 @@ import Test.Unit.Assert as Assert
 import Test.Unit.Main (run, runTestWith)
 import Test.Unit.Output.TAP (runTest)
 
-main :: Eff _ Unit
+main :: Effect Unit
 main = run (runTestWith runTest tests)
 
-tests :: TestSuite _
+tests :: TestSuite
 tests = do
   suite "Ex 4 (type classes)" do
     test "1 joining strings together" do
@@ -240,10 +240,10 @@ addTenToMaybeValue int = Nothing
 addTenToEitherValue :: Either String Int -> Either String Int
 addTenToEitherValue result = Left "fixme"
 
-validNetworkResponse :: Aff _ Int
+validNetworkResponse :: Aff Int
 validNetworkResponse = pure 100
 
-addTenToNetworkResponse :: Aff _ Int -> Aff _ Int
+addTenToNetworkResponse :: Aff Int -> Aff Int
 addTenToNetworkResponse response = response
 
 addTen :: forall f. Functor f => f Int -> f Int
